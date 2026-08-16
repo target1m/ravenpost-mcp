@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "st.ravenpo/ravenpost",
+  "title": "Ravenpost",
+  "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Facebook, Threads and more.",
+  "version": "1.0.1",
+  "websiteUrl": "https://ravenpo.st/mcp/",
+  "icons": [
+    {
+      "src": "https://ravenpo.st/icon-512.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.ravenpo.st/mcp"
+    }
+  ]
+}

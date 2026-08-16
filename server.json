@@ -3,8 +3,13 @@
   "name": "st.ravenpo/ravenpost",
   "title": "Ravenpost",
   "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Facebook, Threads and more.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "websiteUrl": "https://ravenpo.st/mcp/",
+  "repository": {
+    "url": "https://github.com/target1m/ravenpost-mcp",
+    "source": "github",
+    "id": "1336196527"
+  },
   "icons": [
     {
       "src": "https://ravenpo.st/icon-512.png",

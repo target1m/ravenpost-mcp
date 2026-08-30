@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "st.ravenpo/ravenpost",
   "title": "Ravenpost",
-  "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Facebook, Threads and more.",
-  "version": "1.0.2",
+  "description": "Schedule and publish posts to Instagram, TikTok, X, LinkedIn, YouTube, Pinterest, Facebook & more.",
+  "version": "1.1.0",
   "websiteUrl": "https://ravenpo.st/mcp/",
   "repository": {
     "url": "https://github.com/target1m/ravenpost-mcp",

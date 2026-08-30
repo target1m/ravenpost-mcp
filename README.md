@@ -3,8 +3,9 @@
 Schedule and publish social media posts from an AI assistant.
 
 [Ravenpost](https://ravenpo.st/) is a multi-platform social media scheduler —
-Instagram, TikTok, X, Telegram, Facebook, LinkedIn, Threads, Bluesky and
-YouTube. This repository documents its **hosted MCP server**, which exposes the
+Instagram, TikTok, X, Telegram, Facebook, LinkedIn, Threads, Bluesky, YouTube
+and Pinterest. This repository documents its **hosted MCP server**, which
+exposes the
 same posting flow to any MCP client: list the accounts you have connected,
 upload or reshape media, preview a post exactly as each network will render it,
 then publish it now, schedule it, or drop it into a weekly posting queue.
@@ -44,7 +45,7 @@ free plan is enough to try it.
 
 ## Tools
 
-21 tools. Every one declares a title and read-only / destructive hints, so your
+22 tools. Every one declares a title and read-only / destructive hints, so your
 client can tell you what a call will do before you allow it.
 
 ### Accounts
@@ -91,6 +92,7 @@ client can tell you what a call will do before you allow it.
 |---|---|
 | `list_audio` | Search Instagram's licensed audio catalog for a reel track. |
 | `list_queue_slots` | The weekly posting schedule and the next free slot. |
+| `list_boards` | The Pinterest boards each connected account owns — a pin has to name one, and Pinterest has no default. |
 | `platform_limits` | Caption budgets, media rules and recommended specs per platform. |
 
 ## Two things worth knowing

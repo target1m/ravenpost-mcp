@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ravenpost": {
+      "type": "http",
+      "url": "https://api.ravenpo.st/mcp"
+    }
+  }
+}

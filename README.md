@@ -95,6 +95,34 @@ client can tell you what a call will do before you allow it.
 | `list_boards` | The Pinterest boards each connected account owns — a pin has to name one, and Pinterest has no default. |
 | `platform_limits` | Caption budgets, media rules and recommended specs per platform. |
 
+## Skills
+
+The tools are the capability; the skills are the judgement about when to reach
+for which. This repository is also a **plugin** — four skills that teach an
+assistant the workflow the tools sit inside:
+
+| Skill | What it teaches |
+|---|---|
+| [`publish-a-social-post`](skills/publish-a-social-post/SKILL.md) | Settle the workspace, pick the accounts, collect what each destination requires, **preview before writing**, and the confirmation a publish needs — because publishing is the one step that cannot be taken back |
+| [`manage-scheduled-posts`](skills/manage-scheduled-posts/SKILL.md) | Find, edit, move, cancel and check posts — including that editing resets a post to a draft, and that deleting removes our copy rather than the live one |
+| [`prepare-post-media`](skills/prepare-post-media/SKILL.md) | Getting files in, the four canvases, cutting one image for several networks, and the media rules a post actually fails on |
+| [`measure-and-time-posts`](skills/measure-and-time-posts/SKILL.md) | Reading analytics without turning "not collected" into a zero, and quoting `best_times` only when it has an answer |
+
+```
+plugin.json                 portable manifest (Agent Plugins 1.0.0)
+.claude-plugin/plugin.json  the same, for clients that read this path
+.mcp.json                   points at the hosted server above
+skills/<name>/SKILL.md      one workflow each
+skills/publish-a-social-post/references/
+    tools.md                every tool, its arguments and what it returns
+    platforms.md            caption budgets, media rules, per-platform limits
+```
+
+Both reference files are **generated from the server's own tool registrations
+and platform registry**, not transcribed — a skill that describes an argument
+the server no longer takes is worse than one that says nothing, because the
+model follows it and the call fails.
+
 ## Two things worth knowing
 
 **Preview before publish.** `preview_post` writes nothing. It returns the post

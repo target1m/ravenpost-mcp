@@ -1,0 +1,24 @@
+{
+  "name": "ravenpost",
+  "version": "1.0.0",
+  "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram. Compose once, preview every destination before it goes out, then publish now, schedule it, or drop it into a weekly queue — and read back followers, engagement and the hours that actually earned it.",
+  "author": {
+    "name": "Ravenpost",
+    "email": "support@ravenpo.st",
+    "url": "https://ravenpo.st/"
+  },
+  "homepage": "https://ravenpo.st/mcp/",
+  "repository": "https://github.com/target1m/ravenpost-mcp",
+  "license": "MIT",
+  "keywords": [
+    "social media",
+    "scheduler",
+    "cross-posting",
+    "instagram",
+    "tiktok",
+    "twitter",
+    "linkedin",
+    "pinterest",
+    "analytics"
+  ]
+}

@@ -22,7 +22,7 @@ Returns: `workspaces`
 
 **List connected accounts** — read-only
 
-List the social accounts connected to one workspace (Instagram, TikTok, X, Telegram, Facebook, LinkedIn, Threads). Returns each account id, platform, username and status. Use an account id as a target when creating a post. Accounts belong to a single workspace, so with several workspaces pass workspaceId (see list_workspaces) — an account id from one workspace is rejected by a post created in another. `connection` is only meaningful for Instagram: "FACEBOOK_LOGIN" accounts were connected through a Facebook Page and are the only ones that can browse and attach reel audio (list_audio); "INSTAGRAM_LOGIN" accounts publish normally but cannot use audio.
+List the social accounts connected to one workspace (Instagram, TikTok, X, Telegram, LinkedIn, Threads, Bluesky, YouTube and Pinterest; an account connected before its network was withdrawn still lists under its own platform). Returns each account id, platform, username, status and connection. Use an account id as a target when creating a post. Accounts belong to a single workspace, so with several workspaces pass workspaceId (see list_workspaces) — an account id from one workspace is rejected by a post created in another. `connection` is only meaningful for Instagram: "FACEBOOK_LOGIN" accounts were connected through a Facebook Page and are the only ones that can browse and attach reel audio (list_audio); "INSTAGRAM_LOGIN" accounts — the way Instagram connects today — publish normally but cannot use audio.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -141,7 +141,7 @@ Returns: `ok`, `post`, `preview`
 
 **Delete a post** — writes · destructive
 
-Permanently delete a post (and cancel any scheduled publish). Use this to remove drafts or duplicate/obsolete scheduled posts.
+Delete Ravenpost’s copy of a post and cancel any scheduled publish. Use this to remove drafts or duplicate/obsolete scheduled posts. It never takes a post down from a network: a post already published stays live on the platform. The dashboard offers a separate "delete everywhere" where the platform’s API allows it (Instagram, TikTok, Threads and YouTube expose no delete endpoint at all); this tool does not.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -264,7 +264,7 @@ Returns: `sourceId`, `variants`
 
 **Get analytics** — read-only
 
-Get one workspace's analytics overview: follower counts per connected account (plus a daily follower series for the last 30 days) and engagement on recent posts. A post's `source` says where it came from: "ravenpost" for one published from here, "platform" for one already on the account and imported so its engagement counts too. An account's `followers` is null when that platform reports none — LinkedIn, Threads and Discord expose no insights, and TikTok's need a scope that is not approved yet — so null means "unknown", never zero. Likewise a post metric that is absent was not collected rather than being 0.
+Get one workspace's analytics overview: follower counts per connected account (plus a daily follower series for the last 30 days) and engagement on recent posts. A post's `source` says where it came from: "ravenpost" for one published from here, "platform" for one already on the account and imported so its engagement counts too. An account's `followers` is null when that platform reports none — Telegram, LinkedIn, Threads and YouTube expose no insights through their APIs, and TikTok's need a scope that is not approved yet — so null means "unknown", never zero. Likewise a post metric that is absent was not collected rather than being 0.
 
 | Argument | Type | Notes |
 |---|---|---|

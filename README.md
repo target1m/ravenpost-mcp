@@ -1,11 +1,14 @@
 # Ravenpost MCP server
 
-Schedule and publish social media posts from an AI assistant.
+Schedule and publish social media posts to Instagram, TikTok, X, LinkedIn,
+Threads, Bluesky, YouTube, Pinterest and Telegram from Claude, ChatGPT, Cursor,
+Claude Code or any other MCP client.
 
-[Ravenpost](https://ravenpo.st/) is a multi-platform social media scheduler —
-Instagram, TikTok, X, Telegram, Facebook, LinkedIn, Threads, Bluesky, YouTube
-and Pinterest. This repository documents its **hosted MCP server**, which
-exposes the
+[Ravenpost](https://ravenpo.st/) is a multi-platform social media scheduler
+covering those nine networks (Facebook Pages is built but not on offer at the
+moment — Meta lets one app hold either the Instagram Login or the Facebook
+Login permission family, and Ravenpost chose Instagram). This repository
+documents its **hosted MCP server**, which exposes the
 same posting flow to any MCP client: list the accounts you have connected,
 upload or reshape media, preview a post exactly as each network will render it,
 then publish it now, schedule it, or drop it into a weekly posting queue.
@@ -59,12 +62,12 @@ client can tell you what a call will do before you allow it.
 
 | Tool | What it does |
 |---|---|
-| `list_posts` | List posts, filtered by status or platform. |
+| `list_posts` | List recent posts, optionally filtered by status. |
 | `get_post` | One post with every destination's status and permalink. |
 | `preview_post` | Render a post as each platform will show it **without creating anything** — an interactive card in clients that support MCP Apps, and per-platform character counts everywhere else. |
 | `create_post` | Draft, publish, schedule or queue a post across any set of accounts. |
 | `update_post` | Edit a draft or scheduled post — resets it to draft, so pass an action to re-send it. |
-| `delete_post` | Delete the Ravenpost copy and cancel a pending publish. |
+| `delete_post` | Delete the Ravenpost copy and cancel a pending publish. Never takes a live post down from a network. |
 | `schedule_post` | Move a post to a new time. |
 | `publish_post` | Publish a post immediately. |
 

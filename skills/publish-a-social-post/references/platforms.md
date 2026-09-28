@@ -19,8 +19,11 @@ accepted, because an operator can withdraw a platform between releases.
 | Pinterest (`PINTEREST`) | 800 | — | no | 5 | 1 | — |
 
 **A post going to several platforms is limited by the tightest one.** With X in
-the selection the budget is 280 characters, whatever else is selected.
-The API rejects an over-long caption rather than truncating it.
+the selection the budget is 280 characters, whatever else is selected —
+or 25,000 when every X account on the post has X Premium
+(`list_accounts` gives each account's `captionMax` and `xPremium`). X counts every link as
+23 characters and each emoji or symbol such as → − • … as 2. The API rejects an
+over-long caption rather than truncating it.
 
 ## What each platform can and cannot do afterwards
 

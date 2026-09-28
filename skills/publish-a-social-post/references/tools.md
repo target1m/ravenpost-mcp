@@ -22,7 +22,7 @@ Returns: `workspaces`
 
 **List connected accounts** — read-only
 
-List the social accounts connected to one workspace (Instagram, TikTok, X, Telegram, LinkedIn, Threads, Bluesky, YouTube and Pinterest; an account connected before its network was withdrawn still lists under its own platform). Returns each account id, platform, username, status and connection. Use an account id as a target when creating a post. Accounts belong to a single workspace, so with several workspaces pass workspaceId (see list_workspaces) — an account id from one workspace is rejected by a post created in another. `connection` is only meaningful for Instagram: "FACEBOOK_LOGIN" accounts were connected through a Facebook Page and are the only ones that can browse and attach reel audio (list_audio); "INSTAGRAM_LOGIN" accounts — the way Instagram connects today — publish normally but cannot use audio.
+List the social accounts connected to one workspace (Instagram, TikTok, X, Telegram, LinkedIn, Threads, Bluesky, YouTube and Pinterest; an account connected before its network was withdrawn still lists under its own platform). Returns each account id, platform, username, status, connection and captionMax — that account's own caption budget, which create_post holds its caption to. For X it depends on the account: `xPremium` true means X Premium and 25,000 characters, false means 280; X counts every link as 23 and each emoji or symbol such as → − • … as 2. Use an account id as a target when creating a post. Accounts belong to a single workspace, so with several workspaces pass workspaceId (see list_workspaces) — an account id from one workspace is rejected by a post created in another. `connection` is only meaningful for Instagram: "FACEBOOK_LOGIN" accounts were connected through a Facebook Page and are the only ones that can browse and attach reel audio (list_audio); "INSTAGRAM_LOGIN" accounts — the way Instagram connects today — publish normally but cannot use audio.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -81,16 +81,16 @@ Returns: `postId`, `status`, `type`, `scheduledAt`, `publishedAt`, `media`, `thr
 
 ## `create_post`
 
-**Create a post** — writes · destructive · reaches the live platforms
+**Create a post** — writes · destructive · reaches outside Ravenpost
 
-Create a post and either publish it now, schedule it, queue it, or save it as a draft. With more than one workspace, ASK THE USER which one to post to and pass workspaceId — the connected accounts differ per workspace and posting to the wrong one is not undoable. Accounts, media and queue slots must all come from that same workspace. action="queue" schedules at the workspace's next free posting-queue slot (see list_queue_slots) — no scheduledAt needed; it errors if the workspace has no slots defined. Targets are account ids from list_accounts (cross-posting to several is allowed). Caption limit is the tightest selected platform (e.g. X = 280 chars). For media, first upload with upload_media and pass the returned media ids. type is Instagram’s format model (IMAGE/CAROUSEL/REEL/STORY) reused as the shared vocabulary. Instagram honors all four, and Instagram video must be posted as REEL (or STORY) — an IMAGE/CAROUSEL post with a video will be rejected at publish time. Facebook honors STORY (published to Page Stories, which have NO caption — the text is dropped) and treats every other type as a normal feed post. TikTok, X, and Telegram ignore type entirely. See platform_limits.formats for which types each platform honors. thread: extra posts published as replies after the main one, forming a chain. Supported on X, Bluesky, Mastodon, Threads, Telegram and Discord; a platform without a thread model publishes just the caption. The caption is post 1 and carries the media. Limits come from the strictest selected platform (X is tightest at 280 chars per post, 25 follow-ups) and going over is rejected, not truncated. replyTo (X only): reply to an existing tweet — pass the tweet id or its URL (x.com/<user>/status/<id>) and the post is published as a reply under it instead of a standalone tweet (a thread then continues under that reply). Non-X targets ignore it and publish a normal post, so for a pure reply target only the X account. quote (X only): quote-tweet an existing tweet — pass the tweet id or its URL and it is embedded as a card under this post. Can be combined with replyTo (X allows replying and quoting in the same tweet). Non-X targets ignore it. Telegram renders a markdown subset in captions ([text](url) links, **bold**, *italic*, `code`, ~~strikethrough~~) as native formatting; every other platform publishes the caption as plain text, so markdown would show literally there — only use it when all targets are Telegram (see platform_limits.captionFormatting). Threads takes text-only posts, one image/video, or a carousel of up to 20 items, and ignores type. Its 500-character limit is the tightest after X, so a mixed X+Threads selection is still capped at 280. LinkedIn publishes the caption as plain text — its reserved characters are escaped for you, so write normal prose; markdown is not rendered and a bare link does NOT produce a preview card. LinkedIn ignores type, allows text-only posts, and takes either one video or up to 20 images. audio attaches a track from Instagram’s catalog to a reel (find one with list_audio). It applies only to type="REEL" on Instagram accounts connected via Facebook — other platforms and other types ignore it, and the worker logs that it was dropped rather than failing. TikTok and Facebook have NO music API at all: for them the audio has to already be part of the video file. tiktok carries TikTok’s required per-post choices, keyed by account id — most importantly privacyLevel, which TikTok makes mandatory. Leave it out and TikTok targets publish privately. Pinterest needs a board: pass `board` (a board name or an id from list_boards) whenever a Pinterest account is targeted — a pin belongs to a board and there is no default, so without it the post is created but fails to publish. `link` is the pin’s destination URL, which is the point of a pin, and `title` is its headline (the caption becomes the description, max 800 chars).
+Create a post and either publish it now, schedule it, queue it, or save it as a draft. With more than one workspace, ASK THE USER which one to post to and pass workspaceId — the connected accounts differ per workspace and posting to the wrong one is not undoable. Accounts, media and queue slots must all come from that same workspace. action="queue" schedules at the workspace's next free posting-queue slot (see list_queue_slots) — no scheduledAt needed; it errors if the workspace has no slots defined. Targets are account ids from list_accounts (cross-posting to several is allowed). Caption limit is the tightest selected account — each account's captionMax in list_accounts. X's depends on the account: 280 characters, or 25,000 with X Premium, counted as X counts (every link is 23, each emoji or symbol such as → − • … is 2); a caption over it is rejected, naming the account. For media, first upload with upload_media and pass the returned media ids. type is Instagram’s format model (IMAGE/CAROUSEL/REEL/STORY) reused as the shared vocabulary. Instagram honors all four, and Instagram video must be posted as REEL (or STORY) — an IMAGE/CAROUSEL post with a video will be rejected at publish time. Facebook honors STORY (published to Page Stories, which have NO caption — the text is dropped) and treats every other type as a normal feed post. TikTok, X, and Telegram ignore type entirely. See platform_limits.formats for which types each platform honors. thread: extra posts published as replies after the main one, forming a chain. Supported on X, Bluesky, Mastodon, Threads, Telegram and Discord; a platform without a thread model publishes just the caption. The caption is post 1 and carries the media. Limits come from the strictest selected platform (X is tightest at 280 chars per post, or 25,000 for an account on X Premium, and 25 follow-ups) and going over is rejected, not truncated. replyTo (X only): reply to an existing tweet — pass the tweet id or its URL (x.com/<user>/status/<id>) and the post is published as a reply under it instead of a standalone tweet (a thread then continues under that reply). Non-X targets ignore it and publish a normal post, so for a pure reply target only the X account. quote (X only): quote-tweet an existing tweet — pass the tweet id or its URL and it is embedded as a card under this post. Can be combined with replyTo (X allows replying and quoting in the same tweet). Non-X targets ignore it. Telegram renders a markdown subset in captions ([text](url) links, **bold**, *italic*, `code`, ~~strikethrough~~) as native formatting; every other platform publishes the caption as plain text, so markdown would show literally there — only use it when all targets are Telegram (see platform_limits.captionFormatting). Threads takes text-only posts, one image/video, or a carousel of up to 20 items, and ignores type. Its 500-character limit is the tightest after X, so a mixed X+Threads selection is still capped at 280 (unless the X account has X Premium). LinkedIn publishes the caption as plain text — its reserved characters are escaped for you, so write normal prose; markdown is not rendered and a bare link does NOT produce a preview card. LinkedIn ignores type, allows text-only posts, and takes either one video or up to 20 images. audio attaches a track from Instagram’s catalog to a reel (find one with list_audio). It applies only to type="REEL" on Instagram accounts connected via Facebook — other platforms and other types ignore it, and the worker logs that it was dropped rather than failing. TikTok and Facebook have NO music API at all: for them the audio has to already be part of the video file. tiktok carries TikTok’s required per-post choices, keyed by account id — most importantly privacyLevel, which TikTok makes mandatory. Leave it out and TikTok targets publish privately. Pinterest needs a board: pass `board` (a board name or an id from list_boards) whenever a Pinterest account is targeted — a pin belongs to a board and there is no default, so without it the post is created but fails to publish. `link` is the pin’s destination URL, which is the point of a pin, and `title` is its headline (the caption becomes the description, max 800 chars).
 
 | Argument | Type | Notes |
 |---|---|---|
 | `caption`* | string | The post caption / text body |
 | `accountIds`* | array of string | Target social account ids (from list_accounts) |
 | `hashtags` | array of string | Hashtags to append to the caption (with or without a leading #) |
-| `thread` | array of string | Thread: follow-up posts replied in order after the caption (X, Bluesky, Mastodon, Threads, Telegram, Discord; limits come from the strictest selected platform — at most 25 entries, each ≤280 chars on X) |
+| `thread` | array of string | Thread: follow-up posts replied in order after the caption (X, Bluesky, Mastodon, Threads, Telegram, Discord; limits come from the strictest selected platform — at most 25 entries, each ≤280 chars on X, or 25,000 on X Premium) |
 | `collaborators` | array of string | Instagram only: co-author usernames (max 3). They get an invite and the post appears on their profile too. Feed posts and reels only — not stories — and only for accounts connected through Facebook Login. |
 | `link` | string | The URL this post points at. Facebook publishes it as a link preview card (used when the post has no media); Pinterest makes it the pin's destination, which is the whole point of a pin. Every other platform ignores it. Empty string clears it. |
 | `replySettings` | `following` \| `mentionedUsers` \| `subscribers` \| `verified` | X only: who may reply to this post. Omit for X's default (everyone). |
@@ -112,7 +112,7 @@ Returns: `ok`, `post`, `preview`
 
 ## `update_post`
 
-**Edit a post** — writes · destructive · reaches the live platforms
+**Edit a post** — writes · destructive · reaches outside Ravenpost
 
 Edit an existing post (draft or scheduled) — caption, hashtags, format, media or target accounts. A published/publishing post can no longer be edited. IMPORTANT: editing resets the post to a DRAFT. To keep it going out, also pass action="schedule" + scheduledAt (or action="now" to publish immediately). Omit action to leave it as a draft (i.e. to unschedule). caption replaces the whole caption; pass hashtags to append them. Telegram targets render a markdown subset in the caption ([text](url), **bold**, *italic*, `code`, ~~strikethrough~~); other platforms publish it as plain text. audio replaces the Instagram reel track (see list_audio); pass null to remove it. tiktok replaces TikTok’s per-account posting options (privacyLevel, allow*, brand toggles); pass {} to clear them, which makes TikTok targets publish privately again. board moves a Pinterest pin to another board (name or id from list_boards); title replaces the pin title.
 
@@ -122,7 +122,7 @@ Edit an existing post (draft or scheduled) — caption, hashtags, format, media 
 | `caption` | string | New caption (replaces the existing one) |
 | `hashtags` | array of string | Hashtags to append to the caption |
 | `type` | `IMAGE` \| `CAROUSEL` \| `REEL` \| `STORY` | Instagram format |
-| `thread` | array of string | Replace the thread (follow-up posts; limits come from the strictest selected platform — at most 25 entries, each ≤280 chars on X. Pass [] to remove the thread) |
+| `thread` | array of string | Replace the thread (follow-up posts; limits come from the strictest selected platform — at most 25 entries, each ≤280 chars on X, or 25,000 on X Premium. Pass [] to remove the thread) |
 | `replyTo` | string | Replace the X reply target (tweet id or tweet URL; pass "" to make it a standalone tweet again) |
 | `quote` | string | Replace the X quoted tweet (tweet id or tweet URL; pass "" to remove the quote) |
 | `audio` | object | Instagram reel audio — a catalog track from list_audio. Requires type="REEL" and an Instagram account connected via Facebook; ignored otherwise. |
@@ -151,9 +151,9 @@ Returns: `ok`, `deleted`
 
 ## `schedule_post`
 
-**Schedule a post** — writes · destructive
+**Schedule a post** — writes · destructive · reaches outside Ravenpost
 
-Schedule (or reschedule) an existing post for a future time, without editing its content. Pass scheduledAt as an absolute ISO 8601 datetime (include the offset, e.g. 2026-07-05T09:00:00+03:00).
+Schedule (or reschedule) an existing post for a future time, without editing its content. Pass scheduledAt as an absolute ISO 8601 datetime (include the offset, e.g. 2026-07-05T09:00:00+03:00). At that time the post is published to its target accounts, where it is public — tell the user the accounts and the time. A time in the past is refused rather than published immediately; use publish_post for that, and only on an explicit instruction.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -164,9 +164,9 @@ Returns: `ok`, `post`
 
 ## `publish_post`
 
-**Publish a post now** — writes · destructive · reaches the live platforms
+**Publish a post now** — writes · destructive · reaches outside Ravenpost
 
-Publish an existing post immediately (e.g. a draft), without editing its content.
+Publish an existing post immediately (e.g. a draft), without editing its content. A post that has already been published, or is publishing right now, is refused rather than sent twice.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -176,9 +176,9 @@ Returns: `ok`, `post`, `preview`
 
 ## `upload_media`
 
-**Upload media** — writes
+**Upload media** — writes · reaches outside Ravenpost
 
-Upload an image or a video (mp4/mov/webm) to the media library, returning a media id for create_post. Images are reformatted to the requested publishing format; videos are stored as-is (format/fit are ignored — upload the video pre-edited). Give the file as ONE of: url (preferred when it is already online), path (an absolute local file path — local dev only, the server reads it from disk, no base64), or base64 (fallback for small images; avoid for video). For a large local file in production, prefer create_media_upload (direct upload, no base64 through this channel). format: feed_square (1:1), feed_portrait (4:5), landscape (1.91:1), story or reel (9:16), or original (no resize). fit: "cover" crops to fill (default), "contain" fits the whole image and pads.
+Upload an image or a video (mp4/mov/webm) to the media library, returning a media id for create_post. Images are reformatted to the requested publishing format; videos are stored as-is (format/fit are ignored — upload the video pre-edited). Give the file as ONE of: url (preferred when it is already online — the server downloads it from that address), path (an absolute local file path — local dev only, the server reads it from disk, no base64), or base64 (fallback for small images; avoid for video). For a large local file in production, prefer create_media_upload (direct upload, no base64 through this channel). format: feed_square (1:1), feed_portrait (4:5), landscape (1.91:1), story or reel (9:16), or original (no resize). fit: "cover" crops to fill (default), "contain" fits the whole image and pads.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -274,7 +274,7 @@ Returns: `totalFollowers`, `trackedPosts`, `collectedAt`, `refreshing`, `account
 
 ## `list_audio`
 
-**Search reel audio** — read-only
+**Search reel audio** — read-only · reaches outside Ravenpost
 
 Search Instagram’s audio catalog for tracks that can be attached to a reel, then pass the chosen track’s id as create_post/update_post `audio.audioId`. Call it WITHOUT a query to get what is currently trending — that is the featured list. accountId must be an Instagram account connected through Facebook; a directly-connected Instagram account cannot reach the catalog and returns an error explaining how to fix it. Meta only exposes tracks licensed for third-party use, so this catalog is narrower than the one in the Instagram app — a track the user can pick on their phone may legitimately be missing here. This is Instagram-only. TikTok and Facebook expose no music API, so there is nothing to list for them.
 

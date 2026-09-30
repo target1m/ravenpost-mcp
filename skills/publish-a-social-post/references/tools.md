@@ -22,7 +22,7 @@ Returns: `workspaces`
 
 **List connected accounts** — read-only
 
-List the social accounts connected to one workspace (Instagram, TikTok, X, Telegram, LinkedIn, Threads, Bluesky, YouTube and Pinterest; an account connected before its network was withdrawn still lists under its own platform). Returns each account id, platform, username, status, connection and captionMax — that account's own caption budget, which create_post holds its caption to. For X it depends on the account: `xPremium` true means X Premium and 25,000 characters, false means 280; X counts every link as 23 and each emoji or symbol such as → − • … as 2. Use an account id as a target when creating a post. Accounts belong to a single workspace, so with several workspaces pass workspaceId (see list_workspaces) — an account id from one workspace is rejected by a post created in another. `connection` is only meaningful for Instagram: "FACEBOOK_LOGIN" accounts were connected through a Facebook Page and are the only ones that can browse and attach reel audio (list_audio); "INSTAGRAM_LOGIN" accounts — the way Instagram connects today — publish normally but cannot use audio.
+List the social accounts connected to one workspace (Instagram, TikTok, X, Telegram, LinkedIn, Threads, Bluesky, YouTube and Pinterest; an account connected before its network was withdrawn still lists under its own platform). Returns each account id, platform, username, status, connection and captionMax — that account's own caption budget, which create_post holds its caption to. For X it depends on the account: `xPremium` true means X Premium and 25,000 characters, false means 280; X counts every link as 23 and each emoji or symbol such as → − • … as 2. Use an account id as a target when creating a post. Accounts belong to a single workspace, so with several workspaces pass workspaceId (see list_workspaces) — an account id from one workspace is rejected by a post created in another. `connection` is only meaningful for Instagram: "FACEBOOK_LOGIN" accounts were connected through a Facebook Page and are the only ones that can browse and attach reel audio (list_audio) or invite collaborators; "INSTAGRAM_LOGIN" accounts — the way Instagram connects today — publish normally but can do neither.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -57,9 +57,9 @@ Returns: `post`, `preview`
 
 ## `preview_post`
 
-**Preview a post** — read-only
+**Preview a post** — read-only · reaches outside Ravenpost
 
-Render a post as each destination platform will show it — WITHOUT creating anything. Nothing is written, scheduled or published; call create_post afterwards with the same arguments to actually post it. Takes the same arguments as create_post (caption, hashtags, accountIds, mediaIds, type, thread, replyTo, quote, audio), and returns the same preview a client with MCP Apps renders as an interactive card, one tab per platform. Use this before create_post whenever the user is composing rather than dictating: it is the cheapest way to show them what goes out, and it reports what would be rejected — a caption over the tightest platform's budget, a platform that requires media when there is none, a thread longer than the strictest limit, audio on a platform with no music API. The character counts it returns are per platform and authoritative: they are the same ones create_post enforces. For Pinterest, pass board (and link/title) too — the preview warns when a Pinterest target has no board, which is the way a Pinterest post most often fails.
+Render a post as each destination platform will show it — WITHOUT creating anything. Nothing is written, scheduled or published; call create_post afterwards with the same arguments to actually post it. Takes the same arguments as create_post (caption, hashtags, accountIds, mediaIds, type, thread, replyTo, quote, audio, collaborators), and returns the same preview a client with MCP Apps renders as an interactive card, one tab per platform. Use this before create_post whenever the user is composing rather than dictating: it is the cheapest way to show them what goes out, and it reports what would be rejected or silently dropped — a caption over the tightest platform's budget, a platform that requires media when there is none, a thread longer than the strictest limit, audio on a platform with no music API, Instagram collaborators on an account that cannot invite them. The character counts it returns are per platform and authoritative: they are the same ones create_post enforces. For Pinterest, pass board (and link/title) too — the preview warns when a Pinterest target has no board, which is the way a Pinterest post most often fails. A named board is checked against that account's board list, read live from Pinterest's API; that is the only call a preview makes outside Ravenpost.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -72,6 +72,7 @@ Render a post as each destination platform will show it — WITHOUT creating any
 | `replyTo` | string | X reply: tweet id or URL the head post replies to |
 | `quote` | string | X quote: tweet id or URL to embed as a card |
 | `audio` | object | Instagram reel track, for the preview caption line |
+| `collaborators` | array of string | Instagram co-author usernames, as you would pass them to create_post. Nothing in the card draws them — pass them so the preview can warn when the targeted Instagram accounts cannot invite them and they would be dropped. |
 | `link` | string | Facebook link card / Pinterest pin destination URL |
 | `board` | string | Pinterest board name or id — pass it so the preview does not warn about a board you already picked |
 | `title` | string | Pinterest pin title |
@@ -91,7 +92,7 @@ Create a post and either publish it now, schedule it, queue it, or save it as a 
 | `accountIds`* | array of string | Target social account ids (from list_accounts) |
 | `hashtags` | array of string | Hashtags to append to the caption (with or without a leading #) |
 | `thread` | array of string | Thread: follow-up posts replied in order after the caption (X, Bluesky, Mastodon, Threads, Telegram, Discord; limits come from the strictest selected platform — at most 25 entries, each ≤280 chars on X, or 25,000 on X Premium) |
-| `collaborators` | array of string | Instagram only: co-author usernames (max 3). They get an invite and the post appears on their profile too. Feed posts and reels only — not stories — and only for accounts connected through Facebook Login. |
+| `collaborators` | array of string | Instagram only: co-author usernames (max 3). They get an invite, and once they accept the post appears on their profile too. Feed posts and reels only — never a STORY — and ONLY on an Instagram account whose connection is "FACEBOOK_LOGIN" (see list_accounts). On any other Instagram account they are dropped: the post still publishes, without them, and nothing reports it afterwards — so do not promise the user co-authors without checking. preview_post takes the same argument and warns when they would be dropped. |
 | `link` | string | The URL this post points at. Facebook publishes it as a link preview card (used when the post has no media); Pinterest makes it the pin's destination, which is the whole point of a pin. Every other platform ignores it. Empty string clears it. |
 | `replySettings` | `following` \| `mentionedUsers` \| `subscribers` \| `verified` | X only: who may reply to this post. Omit for X's default (everyone). |
 | `community` | string | X only: post into a Community — its id or URL (x.com/i/communities/<id>). Empty string clears it. |
@@ -114,7 +115,7 @@ Returns: `ok`, `post`, `preview`
 
 **Edit a post** — writes · destructive · reaches outside Ravenpost
 
-Edit an existing post (draft or scheduled) — caption, hashtags, format, media or target accounts. A published/publishing post can no longer be edited. IMPORTANT: editing resets the post to a DRAFT. To keep it going out, also pass action="schedule" + scheduledAt (or action="now" to publish immediately). Omit action to leave it as a draft (i.e. to unschedule). caption replaces the whole caption; pass hashtags to append them. Telegram targets render a markdown subset in the caption ([text](url), **bold**, *italic*, `code`, ~~strikethrough~~); other platforms publish it as plain text. audio replaces the Instagram reel track (see list_audio); pass null to remove it. tiktok replaces TikTok’s per-account posting options (privacyLevel, allow*, brand toggles); pass {} to clear them, which makes TikTok targets publish privately again. board moves a Pinterest pin to another board (name or id from list_boards); title replaces the pin title.
+Edit an existing post (draft or scheduled) — caption, hashtags, format, media or target accounts. A published/publishing post can no longer be edited. IMPORTANT: editing resets the post to a DRAFT. To keep it going out, also pass action="schedule" + scheduledAt (or action="now" to publish immediately). Omit action to leave it as a draft (i.e. to unschedule). The schedule is the only thing an edit drops on its own: anything else you leave out stays exactly as it was, so to REMOVE something pass its empty form ("", [], null or {} — each argument says which) rather than leaving it out. tiktok and board belong to specific accounts, so when accountIds adds a TikTok or Pinterest account, pass them again for it — a new TikTok target without options publishes privately, and a new Pinterest target without a board fails to publish. caption replaces the whole caption; pass hashtags to append them. Telegram targets render a markdown subset in the caption ([text](url), **bold**, *italic*, `code`, ~~strikethrough~~); other platforms publish it as plain text. replySettings (who may reply) and community (the Community it posts into) are X only, like replyTo and quote; pass "" to either to go back to X’s default — everyone may reply, and the post goes to the timeline. audio replaces the Instagram reel track (see list_audio); pass null to remove it. collaborators replaces the Instagram co-authors; pass [] to remove them. They reach only an Instagram account whose connection is "FACEBOOK_LOGIN" (see list_accounts) and never a STORY — anywhere else they are dropped and the post publishes without them. tiktok replaces TikTok’s per-account posting options (privacyLevel, allow*, brand toggles); pass {} to clear them, which makes TikTok targets publish privately again. board moves a Pinterest pin to another board (name or id from list_boards); title replaces the pin title. link replaces the URL the post points at — Facebook’s link preview card, Pinterest’s pin destination; pass "" to remove it.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -125,10 +126,14 @@ Edit an existing post (draft or scheduled) — caption, hashtags, format, media 
 | `thread` | array of string | Replace the thread (follow-up posts; limits come from the strictest selected platform — at most 25 entries, each ≤280 chars on X, or 25,000 on X Premium. Pass [] to remove the thread) |
 | `replyTo` | string | Replace the X reply target (tweet id or tweet URL; pass "" to make it a standalone tweet again) |
 | `quote` | string | Replace the X quoted tweet (tweet id or tweet URL; pass "" to remove the quote) |
-| `audio` | object | Instagram reel audio — a catalog track from list_audio. Requires type="REEL" and an Instagram account connected via Facebook; ignored otherwise. |
+| `replySettings` | `following` \| `mentionedUsers` \| `subscribers` \| `verified` \| `""` | X only: replace who may reply to this post. Pass "" to go back to X's default (everyone). |
+| `community` | string | X only: replace the Community this posts into — its id or URL (x.com/i/communities/<id>). Pass "" to post to the timeline again. |
+| `audio` | object \| null | Instagram reel audio — a catalog track from list_audio. Requires type="REEL" and an Instagram account connected via Facebook; ignored otherwise. Pass null to remove the track. |
+| `collaborators` | array of string | Instagram only: replace the co-author usernames (max 3); pass [] to remove them. They get an invite, and once they accept the post appears on their profile too. Feed posts and reels only — never a STORY — and ONLY on an Instagram account whose connection is "FACEBOOK_LOGIN" (see list_accounts). On any other Instagram account they are dropped: the post still publishes, without them, and nothing reports it afterwards — so check the connection before promising the user co-authors. |
 | `tiktok` | object | TikTok posting options, keyed by TikTok account id. Omit and TikTok targets publish privately (SELF_ONLY) — TikTok requires the creator to choose a visibility per post, so nothing wider is assumed on their behalf. |
 | `board` | string | Pinterest only: move the pin to another board — its name (matched case-insensitively) or an id from list_boards. Applied to every Pinterest target on the post. |
 | `title` | string | Pinterest only: replace the pin title (max 100 chars); pass "" to fall back to the caption’s first line. |
+| `link` | string | Replace the URL this post points at. Facebook publishes it as a link preview card (used when the post has no media); Pinterest makes it the pin's destination, which is the whole point of a pin. Every other platform ignores it. Pass "" to remove it. |
 | `mediaIds` | array of string | Replace the media set (ordered asset ids) |
 | `accountIds` | array of string | Replace the target accounts |
 | `action` | `now` \| `schedule` \| `queue` \| `draft` | now = publish, schedule = re-schedule (needs scheduledAt), queue = next free posting-queue slot, draft = keep as draft |
@@ -264,7 +269,7 @@ Returns: `sourceId`, `variants`
 
 **Get analytics** — read-only
 
-Get one workspace's analytics overview: follower counts per connected account (plus a daily follower series for the last 30 days) and engagement on recent posts. A post's `source` says where it came from: "ravenpost" for one published from here, "platform" for one already on the account and imported so its engagement counts too. An account's `followers` is null when that platform reports none — Telegram, LinkedIn, Threads and YouTube expose no insights through their APIs, and TikTok's need a scope that is not approved yet — so null means "unknown", never zero. Likewise a post metric that is absent was not collected rather than being 0.
+Get one workspace's analytics overview: follower counts per connected account (plus a daily follower series for the last 30 days) and engagement on recent posts. A post's `source` says where it came from: "ravenpost" for one published from here, "platform" for one already on the account and imported so its engagement counts too. An account's `followers` is null when we collect none for its platform — today TikTok, Telegram, LinkedIn, Threads and YouTube, whose APIs either expose no insights or need a permission that is not approved yet — so null means "unknown", never zero. Likewise a post metric that is absent was not collected rather than being 0.
 
 | Argument | Type | Notes |
 |---|---|---|
@@ -313,9 +318,9 @@ Returns: `slots`, `nextFreeSlot`
 
 ## `list_boards`
 
-**List Pinterest boards** — read-only
+**List Pinterest boards** — read-only · reaches outside Ravenpost
 
-List the boards on a connected Pinterest account. Every pin belongs to a board and Pinterest has no default, so a post targeting Pinterest must name one — pass the board name or id as `board` on create_post/update_post. accountId is a Pinterest account id from list_accounts; other platforms have no boards and are rejected.
+List the boards on a connected Pinterest account, read live from Pinterest's API with that account's token. Nothing on Pinterest is changed. Every pin belongs to a board and Pinterest has no default, so a post targeting Pinterest must name one — pass the board name or id as `board` on create_post/update_post. accountId is a Pinterest account id from list_accounts; other platforms have no boards and are rejected.
 
 | Argument | Type | Notes |
 |---|---|---|

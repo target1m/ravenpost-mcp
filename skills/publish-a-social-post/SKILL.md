@@ -38,6 +38,11 @@ them confirm.
 - **Instagram reel audio** — `list_audio` (omit the query for what is trending),
   then pass the track as `audio`. Only reels, and only Instagram accounts
   connected through Facebook; the tool says so if the account cannot.
+- **Instagram collaborators** — `collaborators` (up to three usernames) reach
+  only an Instagram account whose `connection` in `list_accounts` is
+  `FACEBOOK_LOGIN`, and never a story. On any other account they are dropped,
+  the post publishes without them, and nothing reports it afterwards — so check
+  before promising co-authors, and pass them to `preview_post`, which warns.
 - **TikTok** — the `tiktok` argument carries the creator's posting options.
   Omit it and the post publishes **privately** (`SELF_ONLY`), which is the safe
   default, not a bug. Say so rather than letting the user assume it went public.

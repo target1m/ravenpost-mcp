@@ -18,7 +18,9 @@
 # Changes to the hosted tools need no new ZIP (the portal rescans the server);
 # changes to plugin.json, mcp.json, skills/ or assets/ do.
 set -euo pipefail
-OPENAI_PACKAGE_NAME="app-6a9f18e033cc81919751236ea984375d"
+# Override for a plugin created fresh from a ZIP, which takes its package
+# name from the manifest:  OPENAI_PACKAGE_NAME=ravenpost scripts/package.sh
+OPENAI_PACKAGE_NAME="${OPENAI_PACKAGE_NAME:-app-6a9f18e033cc81919751236ea984375d}"
 
 cd "$(dirname "$0")/.."
 version=$(python3 -c 'import json; print(json.load(open("plugin.json"))["version"])')
@@ -32,7 +34,9 @@ manifest["name"] = sys.argv[1]
 print(json.dumps(manifest, ensure_ascii=False, indent=2))
 PY
 mkdir -p dist
-out="$PWD/dist/ravenpost-${version}.zip"
+suffix=""
+[ "$OPENAI_PACKAGE_NAME" = "app-6a9f18e033cc81919751236ea984375d" ] || suffix="-${OPENAI_PACKAGE_NAME}"
+out="$PWD/dist/ravenpost-${version}${suffix}.zip"
 rm -f "$out"
 (cd "$stage" && zip -q -r -X "$out" plugin.json mcp.json skills assets LICENSE -x '*.DS_Store')
-echo "dist/ravenpost-${version}.zip"
+echo "dist/ravenpost-${version}${suffix}.zip"

@@ -1,10 +1,10 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ravenpost",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram. Compose once, preview every destination before it goes out, then publish now, schedule it, or drop it into a weekly queue — and read back followers and engagement for the accounts each platform lets it measure.",
   "author": {
-    "name": "Ravenpost",
+    "name": "T1M LLC",
     "email": "support@ravenpo.st",
     "url": "https://ravenpo.st/"
   },

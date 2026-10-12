@@ -112,7 +112,7 @@
         "commerce_description": "Ravenpost sells nothing inside ChatGPT and the plugin processes no payments."
       },
       "publication": {
-        "release_notes": "First release as a plugin package: Ravenpost's MCP server (21 tools) with four skills for publishing, managing scheduled posts, preparing media and reading analytics. Every tool sets readOnlyHint, destructiveHint, openWorldHint and idempotentHint, and its description states what it writes and whether that can be undone. Results carry no internal ids, retry counts, creation timestamps or logging metadata, and list_posts returns 50 posts a page. No message suggests upgrading a plan. The preview widget's CSP lists only Ravenpost's own storage. None of the review test cases publishes or schedules a post. This replaces the earlier submission made through the previous app form (app-6a9f18e033cc81919751236ea984375d), which the new portal cannot update because its MCP configuration is unavailable there."
+        "release_notes": "Initial release. Plan and post to your connected social accounts from ChatGPT: preview a post as each network will show it, then save it as a draft, schedule it, add it to your weekly posting queue or publish it now. Edit, reschedule or cancel posts that have not gone out yet, add images and videos from a link and reshape them for each network, and read follower counts and engagement for the accounts a network lets Ravenpost measure. Works with Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram."
       }
     }
   }

@@ -31,7 +31,7 @@ over-long caption rather than truncating it.
 |---|---|---|---|
 | Instagram (`INSTAGRAM`) | no | yes | automatic |
 | TikTok (`TIKTOK`) | no | yes | automatic |
-| X (`TWITTER`) | yes | yes | automatic |
+| X (`TWITTER`) | yes | no | automatic |
 | Telegram (`TELEGRAM`) | yes | no | automatic |
 | LinkedIn (`LINKEDIN`) | yes | no | manual, every ~60 days (warned 14 days ahead) |
 | Threads (`THREADS`) | no | no | automatic |

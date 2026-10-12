@@ -47,7 +47,12 @@ identity = ("version", "description", "author", "homepage", "repository", "licen
 manifest = {"name": sys.argv[1], **{k: src[k] for k in identity if k in src}}
 manifest["skills"] = "./skills/"
 manifest["interface"] = openai["interface"]
-rest = {k: v for k, v in openai.items() if k != "interface"}
+# Review cases in a package belong to the one MCP server that package
+# declares ("Plugin-level test_cases require exactly one MCP server"), and
+# this one declares none. They stay with the existing MCP app — the portal
+# keeps a plugin's cases when a package omits them — and are edited in its
+# Review details, like the demo video and the commerce answer.
+rest = {k: v for k, v in openai.items() if k not in ("interface", "review")}
 if rest:
     manifest["extensions"] = {"com.openai": rest}
 print(json.dumps(manifest, ensure_ascii=False, indent=2))

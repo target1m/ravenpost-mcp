@@ -34,14 +34,15 @@ Returns: `accounts`
 
 **List posts** — read-only
 
-List recent posts in one workspace, optionally filtered by status (DRAFT, SCHEDULED, PUBLISHING, PUBLISHED, FAILED).
+List the posts in one workspace, 50 at a time: newest first, or soonest first when filtered to SCHEDULED. Optionally filtered by status (DRAFT, SCHEDULED, PUBLISHING, PUBLISHED, FAILED). `total` says how many posts match and `totalPages` how many pages there are; pass `page` to read further back.
 
 | Argument | Type | Notes |
 |---|---|---|
 | `status` | `DRAFT` \| `SCHEDULED` \| `PUBLISHING` \| `PUBLISHED` \| `FAILED` | Filter by post status |
+| `page` | integer | Page to read, from 1 (the default); 50 posts a page |
 | `workspaceId` | string | Which workspace to act in — an id from list_workspaces. Optional with a single workspace; REQUIRED once there are several, where guessing would mean posting one client's content to another client's accounts. Ask the user which one before publishing. |
 
-Returns: `posts`
+Returns: `posts`, `total`, `page`, `totalPages`
 
 ## `get_post`
 
@@ -295,7 +296,7 @@ Returns: `tracks`
 
 **List posting queue slots** — read-only
 
-List the workspace posting schedule: the recurring weekly queue slots (weekday + local time) that action="queue" publishes into, plus the next few free occurrences. Slots are defined in dashboard Settings and are workspace-wide (shared by every connected account), so each workspace has its own schedule. weekday 0 = Sunday … 6 = Saturday, in the workspace timezone.
+List the workspace posting schedule: the recurring weekly queue slots (weekday + local time) that action="queue" publishes into, plus `nextFreeSlot` — the next slot no post is booked into, which is where action="queue" would put a post now (null when there are no slots, or none is free in the weeks ahead). Slots are defined in dashboard Settings and are workspace-wide (shared by every connected account), so each workspace has its own schedule. weekday 0 = Sunday … 6 = Saturday, in the workspace timezone.
 
 | Argument | Type | Notes |
 |---|---|---|

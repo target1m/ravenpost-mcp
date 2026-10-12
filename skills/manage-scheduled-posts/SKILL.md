@@ -15,8 +15,11 @@ one. Post ids belong to a workspace like everything else.
 ## Finding the post
 
 `list_posts` takes an optional `status`: `DRAFT`, `SCHEDULED`, `PUBLISHING`,
-`PUBLISHED`, `FAILED`. "What's scheduled?" is `status: "SCHEDULED"`; "did
-anything fail?" is `FAILED`.
+`PUBLISHED`, `FAILED`. "What's scheduled?" is `status: "SCHEDULED"`, which
+comes back soonest first; "did anything fail?" is `FAILED`. It returns 50 posts
+a page, newest first otherwise — `total` says how many match, and `page` reads
+further back, so say "the 50 most recent" rather than "all of them" when
+`totalPages` is more than one.
 
 `get_post` returns one post with **every destination's own status, permalink and
 error**. That per-target list is the answer to "did it go out?" — a post can be

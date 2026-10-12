@@ -62,7 +62,7 @@ hints, so your client can tell you what a call will do before you allow it.
 
 | Tool | What it does |
 |---|---|
-| `list_posts` | List recent posts, optionally filtered by status. |
+| `list_posts` | Posts 50 at a time — newest first, or soonest first when filtered to scheduled — optionally filtered by status, with the total that matches. |
 | `get_post` | One post with every destination's status and permalink. |
 | `preview_post` | Render a post as each platform will show it **without creating anything** — an interactive card in clients that support MCP Apps, and per-platform character counts everywhere else. |
 | `create_post` | Draft, publish, schedule or queue a post across any set of accounts. |

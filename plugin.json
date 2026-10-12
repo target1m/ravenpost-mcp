@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ravenpost",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram. Compose once, preview every destination before it goes out, then publish now, schedule it, or drop it into a weekly queue — and read back followers and engagement for the accounts each platform lets it measure.",
   "author": {
     "name": "T1M LLC",
@@ -111,7 +111,7 @@
         "commerce_description": "Ravenpost sells nothing inside ChatGPT and the plugin processes no payments."
       },
       "publication": {
-        "release_notes": "Tool annotations follow the plugin guidelines: preview_post and list_boards are no longer marked open world, and every tool description states the behaviour its hints rest on. best_times is removed (21 tools). Results no longer carry internal ids, retry counts, creation timestamps or logging metadata, and list_posts returns 50 posts a page. No message suggests upgrading a plan. The preview widget's CSP lists only Ravenpost's own storage. None of the review test cases publishes or schedules a post. The package now includes four skills."
+        "release_notes": "First release as a plugin package: Ravenpost's MCP server (21 tools) with four skills for publishing, managing scheduled posts, preparing media and reading analytics. Every tool sets readOnlyHint, destructiveHint, openWorldHint and idempotentHint, and its description states what it writes and whether that can be undone. Results carry no internal ids, retry counts, creation timestamps or logging metadata, and list_posts returns 50 posts a page. No message suggests upgrading a plan. The preview widget's CSP lists only Ravenpost's own storage. None of the review test cases publishes or schedules a post. This replaces the earlier submission made through the previous app form (app-6a9f18e033cc81919751236ea984375d), which the new portal cannot update because its MCP configuration is unavailable there."
       }
     }
   }

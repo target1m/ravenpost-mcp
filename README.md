@@ -111,14 +111,27 @@ assistant the workflow the tools sit inside:
 | [`measure-and-time-posts`](skills/measure-and-time-posts/SKILL.md) | Reading analytics without turning "not collected" into a zero, and answering "when should I post?" without inventing a measured hour |
 
 ```
-plugin.json                 portable manifest (Agent Plugins 1.0.0)
-.claude-plugin/plugin.json  the same, for clients that read this path
-.mcp.json                   points at the hosted server above
+plugin.json                 portable manifest (Agent Plugins 1.0.0), with the
+                            ChatGPT listing and review metadata under
+                            extensions.com.openai
+mcp.json                    the hosted server, Agent Plugins format, OAuth (DCR)
+.claude-plugin/plugin.json  the same identity, for Claude Code
+.mcp.json                   the hosted server, Claude Code format
 skills/<name>/SKILL.md      one workflow each
 skills/publish-a-social-post/references/
     tools.md                every tool, its arguments and what it returns
     platforms.md            caption budgets, media rules, per-platform limits
+assets/icon.png             the listing icon
+scripts/package.sh          builds the ZIP the ChatGPT plugin portal takes
 ```
+
+**Submitting to ChatGPT.** OpenAI's plugin portal takes the package as a ZIP
+(Plugins → Upload plugin). `scripts/package.sh` builds it from `plugin.json`,
+`mcp.json`, `skills/`, `assets/` and the licence — nothing Claude-only and no
+credentials (reviewer sign-in goes in the portal's Review details form). The
+listing text, the five positive and three negative review cases and the
+release notes ride in `plugin.json`, so changing them means a new version and
+a new ZIP; changes to the hosted tools don't — the portal rescans the server.
 
 Both reference files are **generated from the server's own tool registrations
 and platform registry**, not transcribed — a skill that describes an argument

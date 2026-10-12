@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ravenpost",
-  "version": "1.1.0",
+  "version": "1.3.0",
   "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram. Compose once, preview every destination before it goes out, then publish now, schedule it, or drop it into a weekly queue — and read back followers and engagement for the accounts each platform lets it measure.",
   "author": {
     "name": "Ravenpost",
@@ -25,5 +25,94 @@
     "pinterest",
     "telegram",
     "analytics"
-  ]
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Ravenpost",
+        "shortDescription": "Schedule social media posts",
+        "longDescription": "Ravenpost is a social media scheduler for content creators, influencers and agencies. Connected to ChatGPT, it works with the social accounts you have connected in your Ravenpost workspace — Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram — so you can plan and post from a conversation.\n\nWhat you can do:\n- Preview a post as each network will show it before anything is created, with a warning for anything a network would reject: a caption over its character limit, missing media, a Pinterest post without a board.\n- Save a post as a draft, schedule it for a time, add it to your weekly posting queue, or publish it now, to one account or several at once.\n- Edit, reschedule or delete posts that have not gone out yet, and check each account's publish status and link.\n- Add images and videos from a link, and reshape one image into each network's format.\n- Read follower counts and engagement on recent posts for the accounts a network lets Ravenpost measure.\n\nGood to know:\n- Ravenpost posts only to accounts already connected in its dashboard; connecting an account happens there, not in ChatGPT.\n- A published post cannot be taken back through Ravenpost on Instagram, TikTok, Threads or YouTube, and deleting a post in Ravenpost never removes it from a network, so review the preview before publishing.\n- Ravenpost does not write captions or generate images: the text and the files come from you or from ChatGPT.\n- Some networks report no analytics; those numbers are shown as not collected, never as zero.\n- You need a Ravenpost account.",
+        "developerName": "T1M LLC",
+        "category": "Productivity",
+        "capabilities": [
+          "Preview posts as each network shows them",
+          "Draft, schedule, queue and publish posts",
+          "Edit, reschedule and delete pending posts",
+          "Upload and reshape images and videos",
+          "Read follower counts and engagement"
+        ],
+        "websiteURL": "https://ravenpo.st/",
+        "supportURL": "https://ravenpo.st/support/",
+        "privacyPolicyURL": "https://ravenpo.st/privacy/",
+        "termsOfServiceURL": "https://ravenpo.st/terms/",
+        "defaultPrompt": [
+          "Preview a launch post for my X and Instagram accounts before anything is posted.",
+          "Save a short post about our new pricing as a draft for my X account.",
+          "How are my connected accounts doing — followers and recent engagement?"
+        ],
+        "brandColor": "#C20D8A",
+        "brandColorDark": "#E879C7",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/icon.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Preview a cross-platform post and surface the warnings that would reject it.",
+              "prompt": "Draft a 300-character launch announcement for my X and Instagram accounts and preview it before anything is posted.",
+              "tools_triggered": "list_accounts, preview_post",
+              "expected_behavior": "Renders the post as each destination shows it and names what would be rejected — such as a caption over an account’s character budget, or Instagram needing media — without creating, scheduling or publishing anything."
+            },
+            {
+              "description": "Ingest an image from a URL and format it for a feed post.",
+              "prompt": "Add https://cdn.ravenpo.st/marketing/samples/v2/wide-cross-post.webp to my media library as a square feed image.",
+              "tools_triggered": "upload_media",
+              "expected_behavior": "Fetches the image, reformats it to the square feed canvas and returns a media id for a later post. Nothing is posted anywhere."
+            },
+            {
+              "description": "Write a post and save it as a draft without publishing it.",
+              "prompt": "Write a short post about our new pricing for my X account and save it as a draft — don’t publish it.",
+              "tools_triggered": "list_accounts, create_post",
+              "expected_behavior": "Creates the post as a draft for the X account and shows it; nothing is published or scheduled, and the draft stays private in the workspace."
+            },
+            {
+              "description": "Review what is drafted and scheduled in the workspace.",
+              "prompt": "Which of my posts are drafts, and which are scheduled to go out?",
+              "tools_triggered": "list_posts",
+              "expected_behavior": "Lists the workspace’s draft and scheduled posts with their target accounts and times, without changing any of them."
+            },
+            {
+              "description": "Report follower counts and recent engagement honestly.",
+              "prompt": "How are my connected accounts doing — followers and engagement on my recent posts?",
+              "tools_triggered": "get_analytics",
+              "expected_behavior": "Reports followers per account and engagement on recent posts, and says which platforms report no numbers rather than presenting them as zero."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Do not trigger for unsupported social-account connection management.",
+              "prompt": "Connect my new Instagram account to Ravenpost.",
+              "expected_behavior": "The app should not be invoked because connecting social accounts is not an exposed MCP workflow."
+            },
+            {
+              "description": "Do not trigger for unrelated calendar management.",
+              "prompt": "What meetings do I have on my calendar tomorrow?",
+              "expected_behavior": "The app should not be invoked because calendar management is outside its supported workflows."
+            },
+            {
+              "description": "Do not trigger for image generation that is outside the media-ingestion workflow.",
+              "prompt": "Generate a photorealistic product launch image for me.",
+              "expected_behavior": "The app should not be invoked because it can ingest supplied media but does not generate images."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "Ravenpost sells nothing inside ChatGPT and the plugin processes no payments."
+      },
+      "publication": {
+        "release_notes": "Version 1.3.0. Tool annotations follow the plugin guidelines: preview_post and list_boards are no longer marked open world, and every tool description states the behaviour its hints rest on. best_times is removed (21 tools). Results no longer carry internal ids, retry counts, creation timestamps or logging metadata, and list_posts returns 50 posts a page. No message suggests upgrading a plan. The preview widget's CSP lists only Ravenpost's own storage. None of the review test cases publishes or schedules a post."
+      }
+    }
+  }
 }

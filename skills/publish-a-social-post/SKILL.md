@@ -69,8 +69,9 @@ caption, and the time. `create_post` needs `caption`, `accountIds` and `action`:
 | `now` | Publishes immediately | **Only** when the user explicitly asked to publish now |
 
 **Publishing is the one step that cannot be undone.** People see a post within
-seconds, and Instagram, Threads, TikTok and YouTube expose no delete endpoint at
-all — deleting in Ravenpost removes our copy and leaves theirs live. So
+seconds, and a post on Instagram, Threads, TikTok or YouTube cannot be taken
+down through Ravenpost at all — deleting in Ravenpost removes our copy and leaves
+theirs live. So
 `action: "now"` and `publish_post` need an explicit instruction from the user in
 this turn. Scheduling does not: it sits on the calendar where it can be read and
 cancelled.

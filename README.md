@@ -48,8 +48,8 @@ free plan is enough to try it.
 
 ## Tools
 
-22 tools. Every one declares a title and read-only / destructive hints, so your
-client can tell you what a call will do before you allow it.
+21 tools. Every one declares a title and read-only / destructive / open-world
+hints, so your client can tell you what a call will do before you allow it.
 
 ### Accounts
 
@@ -75,7 +75,7 @@ client can tell you what a call will do before you allow it.
 
 | Tool | What it does |
 |---|---|
-| `upload_media` | Upload an image or video from a URL, a local path (dev only) or base64; images are reformatted to the platform shape you name. |
+| `upload_media` | Upload an image or video from a URL or base64 (a local path too, on a development server only); images are reformatted to the platform shape you name. |
 | `create_media_upload` | Presigned direct upload — for large or production files, so bytes never pass through the model's context. |
 | `attach_media` | Register a direct upload as an asset, reformatting an image or recording a video as-is. |
 | `create_variants` | Cut one image into several platform canvases at once, cropping on the subject rather than the middle. |
@@ -86,14 +86,13 @@ client can tell you what a call will do before you allow it.
 
 | Tool | What it does |
 |---|---|
-| `get_analytics` | Followers per account and engagement on recent posts. |
-| `best_times` | Recommended posting hours measured from this workspace's own posts — with an explicit "not enough data yet" answer rather than a confident guess. |
+| `get_analytics` | Followers per account and engagement on recent posts — a number a platform doesn't report is absent, never a zero. |
 
 ### Reference
 
 | Tool | What it does |
 |---|---|
-| `list_audio` | Search Instagram's licensed audio catalog for a reel track. |
+| `list_audio` | Search Instagram's licensed audio catalog for a reel track — Instagram accounts connected through a Facebook Page only. |
 | `list_queue_slots` | The weekly posting schedule and the next free slot. |
 | `list_boards` | The Pinterest boards each connected account owns — a pin has to name one, and Pinterest has no default. |
 | `platform_limits` | Caption budgets, media rules and recommended specs per platform. |
@@ -109,7 +108,7 @@ assistant the workflow the tools sit inside:
 | [`publish-a-social-post`](skills/publish-a-social-post/SKILL.md) | Settle the workspace, pick the accounts, collect what each destination requires, **preview before writing**, and the confirmation a publish needs — because publishing is the one step that cannot be taken back |
 | [`manage-scheduled-posts`](skills/manage-scheduled-posts/SKILL.md) | Find, edit, move, cancel and check posts — including that editing resets a post to a draft, and that deleting removes our copy rather than the live one |
 | [`prepare-post-media`](skills/prepare-post-media/SKILL.md) | Getting files in, the four canvases, cutting one image for several networks, and the media rules a post actually fails on |
-| [`measure-and-time-posts`](skills/measure-and-time-posts/SKILL.md) | Reading analytics without turning "not collected" into a zero, and quoting `best_times` only when it has an answer |
+| [`measure-and-time-posts`](skills/measure-and-time-posts/SKILL.md) | Reading analytics without turning "not collected" into a zero, and answering "when should I post?" without inventing a measured hour |
 
 ```
 plugin.json                 portable manifest (Agent Plugins 1.0.0)

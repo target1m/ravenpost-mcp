@@ -29,7 +29,7 @@ on the user's behalf — that is someone else's licence, and they did not ask fo
 | The file is already online | `upload_media` with `url` | The usual case, and the cheapest |
 | A large file, or anything in production | `create_media_upload` → HTTP `PUT` the bytes → `attach_media` | Bytes go straight to storage, never through this conversation |
 | A small image you already hold as bytes | `upload_media` with `base64` | Images only; avoid for video |
-| A local path | `upload_media` with `path` | Development only — the server reads its own disk, and refuses in production |
+| A local path | `upload_media` with `path` | A development server only — it reads its own disk. The hosted server does not offer the argument at all |
 | It is already in the library | `list_media` | Reuse the id instead of uploading twice |
 
 The presigned route is three calls on purpose: `create_media_upload` returns an

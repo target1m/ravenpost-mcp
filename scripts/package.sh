@@ -31,6 +31,9 @@ OPENAI_PACKAGE_NAME="${OPENAI_PACKAGE_NAME:-ravenpost}"
 ICON_URL="https://ravenpo.st/icon-512.png"
 
 cd "$(dirname "$0")/.."
+# Not $PWD: the directory's validator reads that name as a password beside
+# the icon's URL, and holds the plugin for review over it.
+root=$(pwd -P)
 version=$(python3 -c 'import json; print(json.load(open("plugin.json"))["version"])')
 stage=$(mktemp -d)
 trap 'rm -rf "$stage"' EXIT
@@ -46,7 +49,7 @@ PY
 mkdir -p dist
 suffix=""
 [ "$OPENAI_PACKAGE_NAME" = "ravenpost" ] || suffix="-${OPENAI_PACKAGE_NAME}"
-out="$PWD/dist/ravenpost-${version}${suffix}.zip"
+out="$root/dist/ravenpost-${version}${suffix}.zip"
 rm -f "$out"
 (cd "$stage" && zip -q -r -X "$out" plugin.json mcp.json skills assets LICENSE -x '*.DS_Store')
 echo "dist/ravenpost-${version}${suffix}.zip"

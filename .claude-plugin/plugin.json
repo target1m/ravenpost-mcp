@@ -10,7 +10,10 @@
   },
   "homepage": "https://ravenpo.st/mcp/",
   "repository": "https://github.com/target1m/ravenpost-mcp",
+  "documentationUrl": "https://ravenpo.st/docs/mcp/",
+  "supportUrl": "https://ravenpo.st/support/",
   "privacyPolicyUrl": "https://ravenpo.st/privacy/",
+  "termsOfServiceUrl": "https://ravenpo.st/terms/",
   "license": "MIT",
   "keywords": [
     "social media",

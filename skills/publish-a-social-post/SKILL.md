@@ -32,7 +32,7 @@ them confirm.
 
 **3. Collect what the destinations require.** Only some of this applies:
 
-- **Pinterest** — call `list_boards` for that account and pass `board`. A pin
+- **Pinterest** — call `list_boards` for that account and set `board`. A pin
   belongs to a board, Pinterest has no default, and without one the post is
   created and then fails at publish time.
 - **Instagram reel audio** — `list_audio` (omit the query for what is trending),

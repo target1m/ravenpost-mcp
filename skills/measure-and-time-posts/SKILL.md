@@ -45,7 +45,7 @@ one. When the user asks:
   `get_analytics`, but say how many posts that rests on. A handful of posts is
   an anecdote, not a measurement, and it does not make an hour "the best".
 
-When you do schedule, pass `scheduledAt` as an absolute ISO 8601 datetime **with
+When you do schedule, give `scheduledAt` as an absolute ISO 8601 datetime **with
 the offset**, worked out in the workspace's timezone (`list_workspaces` gives
 it), and show the user the local time you computed — a timezone mistake should
 be visible before the post is scheduled, not after it goes out.

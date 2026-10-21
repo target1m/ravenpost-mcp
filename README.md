@@ -170,7 +170,6 @@ skills/<name>/SKILL.md      one workflow each
 skills/publish-a-social-post/references/
     tools.md                every tool, its arguments and what it returns
     platforms.md            caption budgets, media rules, per-platform limits
-assets/icon.png             the listing icon
 server.json                 the official MCP registry entry
 scripts/package.sh          builds the ZIP the ChatGPT plugin portal takes
 ```
@@ -182,8 +181,10 @@ model follows it and the call fails.
 
 **Submitting to ChatGPT.** OpenAI's plugin portal takes the package as a ZIP
 (Plugins → Upload plugin). `scripts/package.sh` builds it from `plugin.json`,
-`mcp.json`, `skills/`, `assets/` and the licence — nothing Claude-only and no
-credentials (reviewer sign-in goes in the portal's Review details form). The
+`mcp.json`, `skills/`, the licence and the icon the site serves — nothing
+Claude-only and no credentials (reviewer sign-in goes in the portal's Review
+details form). The repository keeps no image of its own: the Claude directory
+holds a plugin for review while one sits beside a script that could reach it. The
 listing text, the five positive and three negative review cases and the
 release notes ride in `plugin.json`, so changing them means a new version and
 a new ZIP; changes to the hosted tools don't — the portal rescans the server.

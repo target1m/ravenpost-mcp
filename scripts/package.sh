@@ -20,15 +20,23 @@
 # copy that goes into the ZIP, and only there.
 #
 # Changes to the hosted tools need no new ZIP (the portal rescans the server);
-# changes to plugin.json, mcp.json, skills/ or assets/ do, with a new version.
+# changes to plugin.json, mcp.json, skills/ or the icon do, with a new version.
+#
+# The icon is fetched from ravenpo.st — the same file the site serves — rather
+# than kept here. This folder is also the Claude directory's plugin, and its
+# validator holds every version for a reviewer while a binary file it cannot
+# read sits beside a script that could reach it.
 set -euo pipefail
 OPENAI_PACKAGE_NAME="${OPENAI_PACKAGE_NAME:-ravenpost}"
+ICON_URL="https://ravenpo.st/icon-512.png"
 
 cd "$(dirname "$0")/.."
 version=$(python3 -c 'import json; print(json.load(open("plugin.json"))["version"])')
 stage=$(mktemp -d)
 trap 'rm -rf "$stage"' EXIT
-cp -R mcp.json skills assets LICENSE "$stage/"
+cp -R mcp.json skills LICENSE "$stage/"
+mkdir -p "$stage/assets"
+curl -fsSL "$ICON_URL" -o "$stage/assets/icon.png"
 python3 - "$OPENAI_PACKAGE_NAME" > "$stage/plugin.json" <<'PY'
 import json, sys
 manifest = json.load(open("plugin.json"))

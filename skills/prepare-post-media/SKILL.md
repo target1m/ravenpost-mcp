@@ -39,7 +39,7 @@ matching `Content-Type`, then `attach_media` records it with the **same**
 
 ## Shaping it
 
-Images are reformatted on the way in; pass `format`:
+Images are reformatted on the way in, to the canvas the `format` argument names:
 
 - `feed_square` (1:1), `feed_portrait` (4:5 — the largest an Instagram feed shows),
   `landscape` (1.91:1), `story` (9:16, also what a reel or a TikTok photo wants),

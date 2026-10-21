@@ -31,8 +31,9 @@ OPENAI_PACKAGE_NAME="${OPENAI_PACKAGE_NAME:-ravenpost}"
 ICON_URL="https://ravenpo.st/icon-512.png"
 
 cd "$(dirname "$0")/.."
-# Not $PWD: the directory's validator reads that name as a password beside
-# the icon's URL, and holds the plugin for review over it.
+# From pwd rather than the shell's own working-directory variable: the
+# directory's validator reads that variable's name as a password beside the
+# icon's URL, and holds the plugin for review over it.
 root=$(pwd -P)
 version=$(python3 -c 'import json; print(json.load(open("plugin.json"))["version"])')
 stage=$(mktemp -d)

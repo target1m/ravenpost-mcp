@@ -61,12 +61,16 @@ once — pass each destination the id that fits it.
 
 Video is never re-encoded: `format`, `fit` and `crop` are ignored, and the file
 is recorded exactly as uploaded (mp4, mov or webm). Cut it before uploading.
-Three consequences worth saying out loud before the post fails:
+Four consequences worth saying out loud before the post fails:
 
 - **Instagram video must be posted as `REEL` or `STORY`.** An `IMAGE` or
   `CAROUSEL` post carrying a video is rejected at publish time.
-- **Bluesky takes no video at all**, and **YouTube takes nothing but video**
-  (one per post, no images).
+- **Bluesky takes up to four images or one video, never both** — a video goes
+  alone. Bluesky rations video per account per day, and an account it hosts
+  needs a verified email address before it can upload any; a video Bluesky
+  refuses fails the post with the reason rather than publishing it without the
+  video.
+- **YouTube takes nothing but video** (one per post, no images).
 - **TikTok refuses PNG images** — JPEG or WebP — and it refuses them
   *asynchronously*, minutes after the upload appeared to work. Convert before
   uploading rather than debugging it afterwards.
@@ -74,5 +78,5 @@ Three consequences worth saying out loud before the post fails:
 ## Alt text
 
 Alt text belongs to the asset, not the post: written once, it rides along to X,
-Bluesky, Threads and Mastodon on every post that uses the file. Set it in the
-Ravenpost media library.
+Bluesky and Threads on every post that uses the file (Instagram's publishing API
+has no field for it). Set it in the Ravenpost media library.

@@ -43,6 +43,19 @@ them confirm.
   `FACEBOOK_LOGIN`, and never a story. On any other account they are dropped,
   the post publishes without them, and nothing reports it afterwards — so check
   before promising co-authors, and pass them to `preview_post`, which warns.
+- **Instagram reel cover and trial** — `reelCover` (a library JPEG, or a frame
+  of the video) and `trialReel` (`MANUAL` or `SS_PERFORMANCE`) apply to a
+  `REEL` only. Set a trial only when the user asks for one: Instagram decides
+  which accounts may post it, and a refused trial fails the post rather than
+  going out as a normal reel.
+- **X** — one X account per post: every X account publishes the same text, and
+  X forbids the same post on several accounts. X refuses more than one
+  `$cashtag` in a post (each thread reply counts on its own), a thread reply
+  that @mentions somebody the first post did not, and a reply or quote of a
+  post that is neither the account's own nor names it. The caption budget is
+  280 as X counts it — every link is 23, an emoji or a symbol such as `→` is 2 —
+  or 25,000 for an account on X Premium (`captionMax` in `list_accounts`).
+  `preview_post` warns about all of it.
 - **TikTok** — the `tiktok` argument carries the creator's posting options.
   Omit it and the post publishes **privately** (`SELF_ONLY`), which is the safe
   default, not a bug. Say so rather than letting the user assume it went public.
@@ -122,8 +135,8 @@ as real formatting; every other network publishes the caption verbatim, so
 3. `preview_post` with `caption`, `accountIds: [acc_ig, acc_x]` → warning:
    *Instagram requires media*. Ask the user for an image, upload it, preview
    again — clean, 31/280 characters.
-4. Confirm: "Instagram @ravenpost and X @ravenpost, Tuesday 16 Sep 09:00
+4. Confirm: "Instagram @ravenpost and X @ravenpost, Tuesday 15 Sep 09:00
    (+03:00)."
 5. `create_post` with `action: "schedule"` and
-   `scheduledAt: "2026-09-16T09:00:00+03:00"`.
+   `scheduledAt: "2026-09-15T09:00:00+03:00"`.
 6. Report the post id and that both destinations are scheduled.

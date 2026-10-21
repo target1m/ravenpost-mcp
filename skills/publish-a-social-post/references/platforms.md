@@ -14,7 +14,7 @@ accepted, because an operator can withdraw a platform between releases.
 | Telegram (`TELEGRAM`) | 4096 | 25 | yes | 10 | 10 | — |
 | LinkedIn (`LINKEDIN`) | 3000 | — | yes | 20 | 1 | — |
 | Threads (`THREADS`) | 500 | 25 | yes | 20 | 20 | — |
-| Bluesky (`BLUESKY`) | 300 | 25 | yes | 4 | 0 | — |
+| Bluesky (`BLUESKY`) | 300 | 25 | yes | 4 | 1 | — |
 | YouTube (`YOUTUBE`) | 5000 | — | no | 0 | 1 | — |
 | Pinterest (`PINTEREST`) | 800 | — | no | 5 | 1 | — |
 
@@ -57,7 +57,10 @@ so say so rather than implying the post is gone from the internet.
   minutes later rather than at upload), and carries per-creator posting options
   (`tiktok`) whose defaults publish privately.
 - **YouTube** takes one video and no images.
-- **Bluesky** takes no video at all.
+- **Bluesky** takes up to 4 images or one video, never both —
+  a video goes alone. Video is rationed per account per day, and an account
+  Bluesky hosts needs a verified email address first; a video Bluesky refuses
+  fails the post with the reason instead of publishing it without the video.
 - **Telegram** renders a markdown subset in captions — `[text](url)`,
   `**bold**`, `*italic*`, backtick code, `~~strike~~` — as native formatting.
   Every other platform publishes the caption as plain text, so markdown belongs

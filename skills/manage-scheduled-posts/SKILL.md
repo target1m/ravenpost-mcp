@@ -71,6 +71,10 @@ Common ones are worth recognising:
 - **a token that expired** — LinkedIn connections need reconnecting roughly
   every 60 days, and the account shows as needing attention on the Accounts page.
   Nothing you can do from here; tell the user where to fix it.
+- **an account the platform refused** — a revoked connection, or an account the
+  platform locked or suspended. Ravenpost marks it as needing reconnection, and
+  every post to it fails at once until somebody reconnects it on the Accounts
+  page; retrying from here only fails again.
 - **a missing Pinterest board** — the post was created without one. Add it with
   `update_post` (`board`), then re-publish.
 - **TikTok rejecting an image** — PNG is refused; JPEG or WebP only, and the

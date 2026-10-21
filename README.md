@@ -57,8 +57,16 @@ and its one connector is Ravenpost's hosted server at
 `https://api.ravenpo.st/mcp`. When Claude calls a tool, the request — captions,
 links to media, the accounts you choose, the times you set — goes to Ravenpost
 under your own sign-in, and Ravenpost posts to the networks you selected when
-you publish or when a scheduled time arrives. Nothing is sent anywhere else.
-Ravenpost's privacy policy: <https://ravenpo.st/privacy/>.
+you publish or when a scheduled time arrives.
+
+One other destination, and only for a file you hand over: a large image or
+video can go straight into Ravenpost's own storage, a Cloudflare R2 bucket
+(`*.r2.cloudflarestorage.com`), through a one-time upload link the connector
+issues (`create_media_upload`), so its bytes never pass through the
+conversation. Nothing is sent anywhere else.
+
+Ravenpost keeps your posts, media and connected accounts until you delete them
+or your account. Privacy policy: <https://ravenpo.st/privacy/>.
 
 ## Good to know
 

@@ -46,7 +46,7 @@ so say so rather than implying the post is gone from the internet.
 
 ## Per-platform requirements a post can fail on
 
-- **Pinterest** needs a board. Pass `board` (a name or an id from
+- **Pinterest** needs a board. Set `board` (a name or an id from
   `list_boards`); there is no default, and without one the post is created and
   then fails to publish. `link` is the pin's destination and `title` its
   headline.

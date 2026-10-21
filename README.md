@@ -65,8 +65,9 @@ video can go straight into Ravenpost's own storage, a Cloudflare R2 bucket
 issues (`create_media_upload`), so its bytes never pass through the
 conversation. Nothing is sent anywhere else.
 
-Ravenpost keeps your posts, media and connected accounts until you delete them
-or your account. Privacy policy: <https://ravenpo.st/privacy/>.
+Ravenpost keeps your posts and media until you delete them, and a connected
+account until you disconnect it; deleting your Ravenpost account erases all of
+it. Privacy policy: <https://ravenpo.st/privacy/>.
 
 ## Good to know
 

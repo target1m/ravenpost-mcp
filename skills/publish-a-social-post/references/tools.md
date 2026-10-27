@@ -332,3 +332,85 @@ Takes no arguments.
 
 Returns: `platforms`
 
+## `list_video_templates`
+
+**List video templates** — read-only
+
+List the video templates create_video can render, with what each one is for, the fields it reads and the ones it cannot do without, plus the canvases (9:16, 1:1, 16:9) and what a video and a screenshot cost in credits. Reads a fixed catalogue; nothing is created. Call it once before the first create_video of a conversation, then choose the template whose `when` matches what the user asked for. Every template takes the same flat fields — headline, subheadline, body, shots, features, cta, stat — and ignores the ones it does not use; the brand (name, tagline, icon, accent colour) is filled in from the workspace unless overridden.
+
+Takes no arguments.
+
+Returns: `templates`, `canvases`, `fields`, `credits`
+
+## `create_video`
+
+**Make a video** — writes
+
+Render a short, muted, branded video (9:16 vertical by default; also square and landscape) from one of the templates in list_video_templates, using the workspace's own pictures, and save it to the media library as an mp4 — returning a media id create_post takes as mediaIds. It fills a fixed template with the user's own pictures and words — no generative model draws anything. It costs 25 of the workspace's monthly credits, taken before rendering and handed back if the render fails; once the month's credits are spent it is refused with the balance — tell the user, do not retry. Render only what the user asked for: confirm the template, the headline and the pictures first when they have not said. Pictures come from the media library: upload_media for a file, capture_screenshot for the website, import_app_screenshots for the App Store or Google Play listing. A shot given by mediaId must be an image. The brand name, tagline and icon are filled in from the brand profile and the workspace unless overridden here; set accent to a #rrggbb colour to give the video the brand's colour. Rendering takes a minute or two on a shared box. The call waits up to `wait` seconds (default 40) reporting progress, then returns the finished video — or the render's id and status when it needs longer, in which case call get_video with the id. The result names any field the template leaves out. Nothing is posted anywhere: the video sits in the private library until a post carrying it is published.
+
+| Argument | Type | Notes |
+|---|---|---|
+| `template`* | `app_showcase` \| `feature_list` \| `announcement` \| `milestone` | Which template: app_showcase, feature_list, announcement or milestone (see list_video_templates) |
+| `canvas` | `vertical` \| `square` \| `landscape` | vertical (9:16, default), square (1:1) or landscape (16:9) |
+| `headline`* | string | The big line the video opens with |
+| `subheadline` | string | The line under the headline |
+| `body` | string | A sentence of detail (announcement template) |
+| `shots` | array of object | The pictures, in order (app_showcase needs at least one; announcement and feature_list take the first) |
+| `features` | array of object | Two to five features, for feature_list |
+| `cta` | object | The closing call to action |
+| `stat` | object | The number the milestone template counts up to |
+| `brandName` | string | Overrides the brand name the workspace knows |
+| `brandTagline` | string | Overrides the tagline; "" for none |
+| `iconMediaId` | string | An image in the media library to use as the brand mark (the app icon) |
+| `accent` | string | Brand colour as #rrggbb |
+| `theme` | `dark` \| `light` | dark (default) or light background |
+| `title` | string | A name for the video in the library; defaults to the headline |
+| `wait` | integer | Seconds to wait for the render before answering (default 40) |
+| `workspaceId` | string | Which workspace to act in — an id from list_workspaces. Optional with a single workspace; REQUIRED once there are several, where guessing would mean posting one client's content to another client's accounts. Ask the user which one before publishing. |
+
+Returns: `ok`, `render`, `media`, `posterUrl`, `ignored`, `credits`, `next`
+
+## `get_video`
+
+**Check a video render** — read-only
+
+Check a render create_video or capture_screenshot started: its status (queued, rendering, ready, failed), progress and, once ready, the media ids and URLs. Reads one row; nothing is changed. Set `wait` (seconds, up to 45) to hold the call until it settles or the time is up — one call like that beats polling every second.
+
+| Argument | Type | Notes |
+|---|---|---|
+| `renderId`* | string | The id create_video or capture_screenshot returned |
+| `wait` | integer | Seconds to wait for it to finish (default 0: answer at once) |
+
+Returns: `ok`, `render`, `media`, `posterUrl`, `ignored`, `credits`, `next`
+
+## `capture_screenshot`
+
+**Screenshot a website** — writes · reaches outside Ravenpost
+
+Take screenshots of a web page — the workspace's own site, usually — with a headless browser, as a desktop (1440×900 at 2×) and/or a mobile (390×844 at 3×) capture, and save them to the media library as images: shots for create_video, or pictures for a post. Each device costs 2 credits; when the month's credits cover fewer devices than asked, it captures what they cover and says so, and once they are spent it is refused with the balance — tell the user, do not retry. The server fetches whatever public https address is given, so point it only at pages the user named; private and internal addresses are refused. fullPage captures the whole page (as a JPEG) rather than the first screen (PNG). Waits up to `wait` seconds (default 40) for the capture; a page that takes longer is finished with get_video.
+
+| Argument | Type | Notes |
+|---|---|---|
+| `url`* | string | The page to capture, e.g. https://example.com/ |
+| `devices` | array of `desktop` \| `mobile` | Which captures to take (default both) |
+| `fullPage` | boolean | The whole page rather than the first screen (default false) |
+| `wait` | integer | Seconds to wait for the capture (default 40) |
+| `workspaceId` | string | Which workspace to act in — an id from list_workspaces. Optional with a single workspace; REQUIRED once there are several, where guessing would mean posting one client's content to another client's accounts. Ask the user which one before publishing. |
+
+Returns: `ok`, `render`, `media`, `posterUrl`, `ignored`, `credits`, `next`
+
+## `import_app_screenshots`
+
+**Import app store screenshots** — writes · reaches outside Ravenpost
+
+Copy an app's store listing pictures — its phone screenshots and its icon — from the App Store or Google Play into the media library, returning media ids: the screenshots become shots for create_video (app_showcase especially) and the icon its brand mark (iconMediaId). Reads the listing the workspace's brand profile holds when no url is given. Costs no credits; a picture already imported is reused rather than copied again. Apple's listing is read through its lookup API; Google Play's from its page, best effort.
+
+| Argument | Type | Notes |
+|---|---|---|
+| `url` | string | The App Store or Google Play link; omit to use the brand profile's |
+| `store` | `app_store` \| `google_play` | Which of the profile's listings to read (default: the App Store one when both are saved) |
+| `limit` | integer | How many screenshots at most (default 6) |
+| `workspaceId` | string | Which workspace to act in — an id from list_workspaces. Optional with a single workspace; REQUIRED once there are several, where guessing would mean posting one client's content to another client's accounts. Ask the user which one before publishing. |
+
+Returns: `ok`, `store`, `name`, `screenshots`, `icon`, `reused`, `next`
+

@@ -115,15 +115,17 @@ as real formatting; every other network publishes the caption verbatim, so
 
 ## Refuse, or stop and ask
 
-- Never invent media. The model cannot generate images or video here; the media
-  tools ingest what the user provides. If a post needs a picture and there is
-  none, ask for one.
+- Never invent media. No tool here draws a picture with AI: media is what the
+  user provides, or what the tools make from what is already theirs — their
+  store screenshots, a screenshot of their site, a template video from those
+  (see the prepare-post-media skill, "Making pictures and video"). If a post
+  needs a picture and none of that fits, ask for one.
 - Never publish, delete, or change an existing post's schedule on your own
   initiative — only on a clear instruction.
 - Never post to an account the user did not name or approve, and never fan out
   to "all accounts" without listing them first.
 - If a tool errors, read it: this server's errors name the fix (which workspaces
-  exist, which boards exist, why TikTok refused). Pass that on instead of
+  exist, which boards exist, why TikTok refused). Tell the user that instead of
   retrying the same call.
 
 ## Worked example

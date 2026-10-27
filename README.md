@@ -85,7 +85,7 @@ it. Privacy policy: <https://ravenpo.st/privacy/>.
 
 ## Tools
 
-21 tools. Every one declares a title and read-only / destructive / open-world
+26 tools. Every one declares a title and read-only / destructive / open-world
 hints, so your client can tell you what a call will do before you allow it.
 
 ### Accounts
@@ -124,6 +124,16 @@ hints, so your client can tell you what a call will do before you allow it.
 | Tool | What it does |
 |---|---|
 | `get_analytics` | Followers per account and engagement on recent posts — a number a platform doesn't report is absent, never a zero. |
+
+### Studio
+
+| Tool | What it does |
+|---|---|
+| `list_video_templates` | The video templates `create_video` fills — app showcase, feature list, announcement, milestone — with the fields each reads and what a video and a screenshot cost in credits. |
+| `create_video` | Fill a template with the workspace's own pictures and words: a short branded video (9:16, 1:1 or 16:9) saved to the media library as an mp4, ready for a post. No generative model draws anything. Waits and reports progress; returns the render's id when it needs longer. |
+| `get_video` | Check a render's progress, or wait for it, and get the media id once it is ready. |
+| `capture_screenshot` | Screenshot a web page on a desktop and a phone into the media library — shots for a video, or pictures for a post. |
+| `import_app_screenshots` | Copy an app's App Store or Google Play screenshots and icon into the media library, free of credits. |
 
 ### Reference
 

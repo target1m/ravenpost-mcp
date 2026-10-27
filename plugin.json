@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ravenpost",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram. Compose once, preview every destination before it goes out, then publish now, schedule it, or drop it into a weekly queue — and read back followers and engagement for the accounts each platform lets it measure.",
   "author": {
     "name": "T1M LLC",
@@ -31,7 +31,7 @@
       "interface": {
         "displayName": "Ravenpost",
         "shortDescription": "Schedule social media posts",
-        "longDescription": "Ravenpost is a social media scheduler for content creators, influencers and agencies. Connected to ChatGPT, it works with the social accounts you have connected in your Ravenpost workspace — Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram — so you can plan and post from a conversation.\n\nWhat you can do:\n- Preview a post as each network will show it before anything is created, with a warning for anything a network would reject: a caption over its character limit, missing media, a Pinterest post without a board.\n- Save a post as a draft, schedule it for a time, add it to your weekly posting queue, or publish it now, to one account or several at once.\n- Edit, reschedule or delete posts that have not gone out yet, and check each account's publish status and link.\n- Add images and videos from a link, and reshape one image into each network's format.\n- Read follower counts and engagement on recent posts for the accounts a network lets Ravenpost measure.\n\nGood to know:\n- Ravenpost posts only to accounts already connected in its dashboard; connecting an account happens there, not in ChatGPT.\n- A published post cannot be taken back through Ravenpost on Instagram, TikTok, Threads or YouTube, and deleting a post in Ravenpost never removes it from a network, so review the preview before publishing.\n- Ravenpost does not write captions or generate images: the text and the files come from you or from ChatGPT.\n- Some networks report no analytics; those numbers are shown as not collected, never as zero.\n- You need a Ravenpost account.",
+        "longDescription": "Ravenpost is a social media scheduler for content creators, influencers and agencies. Connected to ChatGPT, it works with the social accounts you have connected in your Ravenpost workspace — Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram — so you can plan and post from a conversation.\n\nWhat you can do:\n- Preview a post as each network will show it before anything is created, with a warning for anything a network would reject: a caption over its character limit, missing media, a Pinterest post without a board.\n- Save a post as a draft, schedule it for a time, add it to your weekly posting queue, or publish it now, to one account or several at once.\n- Edit, reschedule or delete posts that have not gone out yet, and check each account's publish status and link.\n- Add images and videos from a link, and reshape one image into each network's format.\n- Read follower counts and engagement on recent posts for the accounts a network lets Ravenpost measure.\n\nGood to know:\n- Ravenpost posts only to accounts already connected in its dashboard; connecting an account happens there, not in ChatGPT.\n- A published post cannot be taken back through Ravenpost on Instagram, TikTok, Threads or YouTube, and deleting a post in Ravenpost never removes it from a network, so review the preview before publishing.\n- Ravenpost does not write captions or draw images with AI. It can make a short branded video from a template and your own pictures, screenshot your website and import your app’s store screenshots — everything else comes from you or from ChatGPT.\n- Some networks report no analytics; those numbers are shown as not collected, never as zero.\n- You need a Ravenpost account.",
         "developerName": "T1M LLC",
         "category": "Productivity",
         "capabilities": [
@@ -39,6 +39,7 @@
           "Draft, schedule, queue and publish posts",
           "Edit, reschedule and delete pending posts",
           "Upload and reshape images and videos",
+    "Make template videos and website screenshots",
           "Read follower counts and engagement"
         ],
         "websiteURL": "https://ravenpo.st/",
@@ -112,7 +113,7 @@
         "commerce_description": "Ravenpost sells nothing inside ChatGPT and the plugin processes no payments."
       },
       "publication": {
-        "release_notes": "Initial release. Plan and post to your connected social accounts from ChatGPT: preview a post as each network will show it, then save it as a draft, schedule it, add it to your weekly posting queue or publish it now. Edit, reschedule or cancel posts that have not gone out yet, add images and videos from a link and reshape them for each network, and read follower counts and engagement for the accounts a network lets Ravenpost measure. Works with Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram."
+        "release_notes": "Make a short branded video from a template and your own pictures (an app showcase, a feature list, an announcement or a milestone, at 9:16, 1:1 or 16:9), screenshot your website on a desktop and a phone, and import your app’s App Store or Google Play screenshots — all into your media library, ready to post. Videos and screenshots use your workspace’s monthly credits; importing store screenshots is free."
       }
     }
   }

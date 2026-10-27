@@ -1,6 +1,6 @@
 ---
 name: prepare-post-media
-description: Get images and video into Ravenpost's media library and into the right shape for each network — upload from a URL, a local path or a direct presigned upload, reformat to feed, square, landscape, story or reel canvases, and cut one image into several platform sizes at once. Use when a post needs a picture or video, when the user hands over a file or link to post, when an image is the wrong aspect ratio for Instagram or TikTok, or when they ask what sizes a platform wants.
+description: Get images and video into Ravenpost's media library and into the right shape for each network — upload from a URL, a local path or a direct presigned upload, reformat to feed, square, landscape, story or reel canvases, cut one image into several platform sizes at once, import an app's App Store or Google Play screenshots, screenshot a website, and make a short branded template video (a launch video, a feature list, an announcement, a milestone) from those pictures. Use when a post needs a picture or video, when the user hands over a file or link to post, when an image is the wrong aspect ratio for Instagram or TikTok, when they ask for a launch or promo video, a screenshot of their site, or their store screenshots, or when they ask what sizes a platform wants.
 ---
 
 # Prepare media for a post
@@ -15,12 +15,14 @@ Full argument list:
 Per-platform media rules:
 [`../publish-a-social-post/references/platforms.md`](../publish-a-social-post/references/platforms.md).
 
-## You cannot make the picture
+## You cannot invent the picture
 
-These tools **ingest** files; nothing here generates an image or a video. If a
-post needs media and the user has not provided any, ask for it. Do not describe
-an image you intend to produce, and do not fetch a stock photo from the open web
-on the user's behalf — that is someone else's licence, and they did not ask for it.
+No tool here draws an image with AI. The upload tools **ingest** files, and the
+three further down make media only from what is already the user's — their
+site, their store listing, their own screenshots in a template video. If a post
+needs media and none of that fits, ask for it. Do not describe an image you
+intend to produce, and do not fetch a stock photo from the open web on the
+user's behalf — that is someone else's licence, and they did not ask for it.
 
 ## Getting a file in
 
@@ -36,6 +38,39 @@ The presigned route is three calls on purpose: `create_media_upload` returns an
 `uploadUrl` and a `storageKey`, you PUT the raw bytes to that URL with the
 matching `Content-Type`, then `attach_media` records it with the **same**
 `workspaceId` you presigned in.
+
+## Making pictures and video, not only uploading them
+
+Three tools make media rather than take it, and all three land in the same
+library as an upload, so the ids they return go wherever a media id goes:
+
+| Want | Tool | Costs |
+|---|---|---|
+| The app's own store screenshots and icon | `import_app_screenshots` — reads the App Store or Google Play listing saved in the brand profile, or a link you pass | Nothing; a picture already imported is reused |
+| A picture of the website | `capture_screenshot` — desktop and/or phone, first screen or whole page | The price per device `list_video_templates` returns |
+| A short branded video | `list_video_templates`, then `create_video` with the pictures above as `shots` | The video price `list_video_templates` returns, handed back if the render fails |
+
+Prices are the workspace's own and an administrator may change them, so read
+them from `list_video_templates` rather than from memory. In this order:
+
+1. **Store screenshots first** when the user has an app: `import_app_screenshots`
+   costs nothing, and a picture already imported is reused rather than copied.
+2. **Look before capturing**: `list_media` may already hold the screenshots or
+   the capture you are about to pay for.
+3. **Say the price before a render or a capture** the user did not explicitly
+   ask to pay for, and stop if they decline. Once the month's credits are spent
+   both tools refuse with the balance: tell the user, do not retry.
+
+No generative model draws anything here: `create_video` fills a fixed
+template with the user's own pictures and words.
+
+`create_video` takes one flat set of fields for every template — headline,
+subheadline, body, shots, features, cta, stat — and each template reads what
+it needs; its result says what a template left out. Render only what the user
+asked for, settle the template, the headline and the pictures first, and when
+the call comes back still rendering, pick it up with `get_video` (`wait: 45`)
+rather than starting another. A vertical video is the default and right for
+Reels, TikTok, Shorts and Stories; Instagram takes it as `type: "REEL"`.
 
 ## Shaping it
 

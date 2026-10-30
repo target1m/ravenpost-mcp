@@ -172,7 +172,7 @@ Schedule (or reschedule) an existing post for a future time, without editing its
 | `postId`* | string | The post id |
 | `scheduledAt`* | string | ISO 8601 datetime to publish at (include timezone offset) |
 
-Returns: `ok`, `post`
+Returns: `ok`, `post`, `warnings`
 
 ## `publish_post`
 
@@ -346,13 +346,13 @@ Returns: `templates`, `canvases`, `fields`, `credits`
 
 **Make a video** — writes
 
-Render a short, muted, branded video (9:16 vertical by default; also square and landscape) from one of the templates in list_video_templates, using the workspace's own pictures, and save it to the media library as an mp4 — returning a media id create_post takes as mediaIds. It fills a fixed template with the user's own pictures and words — no generative model draws anything. It costs 25 of the workspace's monthly credits, taken before rendering and handed back if the render fails; once the month's credits are spent it is refused with the balance — tell the user, do not retry. Render only what the user asked for: confirm the template, the headline and the pictures first when they have not said. Pictures come from the media library: upload_media for a file, capture_screenshot for the website, import_app_screenshots for the App Store or Google Play listing. A shot given by mediaId must be an image. The brand name, tagline and icon are filled in from the brand profile and the workspace unless overridden here; set accent to a #rrggbb colour to give the video the brand's colour. Rendering takes a minute or two on a shared box. The call waits up to `wait` seconds (default 40) reporting progress, then returns the finished video — or the render's id and status when it needs longer, in which case call get_video with the id. The result names any field the template leaves out. Nothing is posted anywhere: the video sits in the private library until a post carrying it is published.
+Render a short branded video (9:16 vertical by default; also square and landscape) and save it to the media library as an mp4 — returning a media id create_post takes as mediaIds. Either a storyboard (template storyboard: the scenes given in `scenes`, in order, with an optional music bed) or one of the fixed, silent templates in list_video_templates. Pick the canvas by where it goes: vertical for Reels, TikTok, Shorts and Stories (every word is kept clear of the buttons and captions those apps draw over a video, and inside the feed's 4:5 crop), square for X, LinkedIn and other feeds, landscape only for YouTube or a website. Fewer, shorter lines read better: three features beat five. It lays out the user's own pictures, clips and words — no generative model draws anything. It costs 25 of the workspace's monthly credits, taken before rendering and handed back if the render fails; once the month's credits are spent it is refused with the balance — tell the user, do not retry. Render only what the user asked for: confirm the template, the headline and the pictures first when they have not said. Pictures come from the media library: upload_media for a file, capture_screenshot for the website, import_app_screenshots for the App Store or Google Play listing. A shot given by mediaId must be an image. The brand name, tagline and icon are filled in from the brand profile and the workspace unless overridden here; set accent to a #rrggbb colour to give the video the brand's colour. Rendering takes one to five minutes on a shared box, a 30-second storyboard the most. The call waits up to `wait` seconds (default 40) reporting progress, then returns the finished video — or the render's id and status when it needs longer, in which case call get_video with the id. The result names any field the template leaves out. Nothing is posted anywhere: the video sits in the private library until a post carrying it is published.
 
 | Argument | Type | Notes |
 |---|---|---|
-| `template`* | `app_showcase` \| `feature_list` \| `announcement` \| `milestone` | Which template: app_showcase, feature_list, announcement or milestone (see list_video_templates) |
+| `template`* | `app_showcase` \| `feature_list` \| `announcement` \| `milestone` \| `storyboard` | storyboard (your own scenes — the one for a reel or a TikTok), or a fixed template: app_showcase, feature_list, announcement or milestone (see list_video_templates) |
 | `canvas` | `vertical` \| `square` \| `landscape` | vertical (9:16, default), square (1:1) or landscape (16:9) |
-| `headline`* | string | The big line the video opens with |
+| `headline`* | string | The big line the video opens with; for a storyboard, the name it is filed under (its hook scene opens it) |
 | `subheadline` | string | The line under the headline |
 | `body` | string | A sentence of detail (announcement template) |
 | `shots` | array of object | The pictures, in order (app_showcase needs at least one; announcement and feature_list take the first) |
@@ -365,6 +365,8 @@ Render a short, muted, branded video (9:16 vertical by default; also square and 
 | `accent` | string | Brand colour as #rrggbb |
 | `theme` | `dark` \| `light` | dark (default) or light background |
 | `title` | string | A name for the video in the library; defaults to the headline |
+| `scenes` | array of value | The storyboard template's scenes, in order: 2 to 10, at most 30 s in all, opening on a hook and ending on an end card (see list_video_templates). The other templates ignore them. |
+| `music` | `glow` \| `pulse` \| `drift` | A music bed under a storyboard: glow (warm and calm — a product walkthrough, a story); pulse (upbeat — a launch, a release, a big number); drift (mellow lo-fi — tips, how-tos, behind the scenes). Leave out for none; the templates are always silent. |
 | `wait` | integer | Seconds to wait for the render before answering (default 40) |
 | `workspaceId` | string | Which workspace to act in — an id from list_workspaces. Optional with a single workspace; REQUIRED once there are several, where guessing would mean posting one client's content to another client's accounts. Ask the user which one before publishing. |
 

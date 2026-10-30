@@ -1,6 +1,6 @@
 ---
 name: prepare-post-media
-description: Get images and video into Ravenpost's media library and into the right shape for each network — upload from a URL, a local path or a direct presigned upload, reformat to feed, square, landscape, story or reel canvases, cut one image into several platform sizes at once, import an app's App Store or Google Play screenshots, screenshot a website, and make a short branded template video (a launch video, a feature list, an announcement, a milestone) from those pictures. Use when a post needs a picture or video, when the user hands over a file or link to post, when an image is the wrong aspect ratio for Instagram or TikTok, when they ask for a launch or promo video, a screenshot of their site, or their store screenshots, or when they ask what sizes a platform wants.
+description: Get images and video into Ravenpost's media library and into the right shape for each network — upload from a URL, a local path or a direct presigned upload, reformat to feed, square, landscape, story or reel canvases, cut one image into several platform sizes at once, import an app's App Store or Google Play screenshots, screenshot a website, and make a short branded video from those pictures and the user's own clips — a reel told in scenes, with one of Ravenpost's own music tracks, or a fixed template (a launch video, a feature list, an announcement, a milestone). Use when a post needs a picture or video, when the user hands over a file or link to post, when an image is the wrong aspect ratio for Instagram or TikTok, when they ask for a reel, a TikTok, a launch or promo video, a screenshot of their site, or their store screenshots, or when they ask what sizes a platform wants.
 ---
 
 # Prepare media for a post
@@ -19,7 +19,7 @@ Per-platform media rules:
 
 No tool here draws an image with AI. The upload tools **ingest** files, and the
 three further down make media only from what is already the user's — their
-site, their store listing, their own screenshots in a template video. If a post
+site, their store listing, their own screenshots and clips in a video. If a post
 needs media and none of that fits, ask for it. Do not describe an image you
 intend to produce, and do not fetch a stock photo from the open web on the
 user's behalf — that is someone else's licence, and they did not ask for it.
@@ -48,7 +48,7 @@ library as an upload, so the ids they return go wherever a media id goes:
 |---|---|---|
 | The app's own store screenshots and icon | `import_app_screenshots` — reads the App Store or Google Play listing saved in the brand profile, or a link you pass | Nothing; a picture already imported is reused |
 | A picture of the website | `capture_screenshot` — desktop and/or phone, first screen or whole page | The price per device `list_video_templates` returns |
-| A short branded video | `list_video_templates`, then `create_video` with the pictures above as `shots` | The video price `list_video_templates` returns, handed back if the render fails |
+| A short branded video | `list_video_templates`, then `create_video`: a storyboard's scenes take the pictures above and the user's own clips by media id, a fixed template takes the pictures as `shots` | The video price `list_video_templates` returns, handed back if the render fails |
 
 Prices are the workspace's own and an administrator may change them, so read
 them from `list_video_templates` rather than from memory. In this order:
@@ -61,16 +61,52 @@ them from `list_video_templates` rather than from memory. In this order:
    ask to pay for, and stop if they decline. Once the month's credits are spent
    both tools refuse with the balance: tell the user, do not retry.
 
-No generative model draws anything here: `create_video` fills a fixed
-template with the user's own pictures and words.
+No generative model draws or composes anything here: `create_video` lays out
+the user's own pictures, clips and words, and a storyboard's music is one of
+three fixed tracks in Ravenpost's own catalogue, made once for these videos
+and the same for every workspace.
 
-`create_video` takes one flat set of fields for every template — headline,
-subheadline, body, shots, features, cta, stat — and each template reads what
-it needs; its result says what a template left out. Render only what the user
-asked for, settle the template, the headline and the pictures first, and when
-the call comes back still rendering, pick it up with `get_video` (`wait: 45`)
-rather than starting another. A vertical video is the default and right for
-Reels, TikTok, Shorts and Stories; Instagram takes it as `type: "REEL"`.
+Render only what the user asked for, and settle the template, the words and
+the pictures first. Rendering takes one to five minutes, a 30-second
+storyboard the most; when the call comes back still rendering, pick it up
+with `get_video` (`wait: 45`) rather than starting another. A vertical video
+is the default and right for Reels, TikTok, Shorts and Stories; Instagram
+takes it as `type: "REEL"`.
+
+### A reel is a storyboard
+
+A reel, a TikTok or a Short is `template: "storyboard"` unless the user asked
+for one of the fixed templates: two to ten `scenes`, at most 30 seconds,
+cross-faded in order. `headline` is still required; for a storyboard it is
+the name the video is filed under. What holds a scroll:
+
+- **Scene 1 is a `hook`**, and it is also the cover: the viewer's question, a
+  claim they would argue with, or the problem in their words, in under seven
+  words, with the turn in `accent` ("Posting to nine apps?" / "Do it once.").
+  Never open on the brand's name or a greeting.
+- **Then show it**, in two to four scenes: `device` with a real screen of the
+  product (store screenshots or a capture first; `motion: "scroll"` for a whole
+  page), `clip` with the user's own footage, `compare` for the old way beside
+  the new, `chat` for an app that answers questions, `stat` for a number the
+  user gave you, `list` for at most three short points, `statement` for one
+  sentence.
+- **End on `end`**: the brand, a closing line and `create_video`'s own `cta`.
+  Five to seven scenes and 12 to 25 seconds hold best; leave the durations to
+  the template unless a scene needs longer.
+- **Music** is `music`: `pulse` for a launch or a number, `glow` for a
+  walkthrough, `drift` for tips. Leave it out when the user's clip has sound
+  worth keeping, and set `sound: true` on that scene.
+- One idea per scene and few words: a scene is read in two seconds. The
+  template keeps every word clear of the buttons and the caption Reels, TikTok
+  and Shorts draw over a vertical video, so never pad text to move it.
+
+### The fixed templates
+
+App showcase, feature list, announcement and milestone are silent and take one
+flat set of fields — headline, subheadline, body, shots, features, cta, stat —
+each reading what it needs; the result says what a template left out. Use
+them when the user asked for one, or for a release note (feature list) or a
+number (milestone) outside a reel.
 
 ## Shaping it
 

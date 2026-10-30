@@ -16,7 +16,7 @@ Caption budgets and per-platform rules: [`references/platforms.md`](references/p
 ## Before writing anything
 
 **1. Settle the workspace.** Call `list_workspaces`. With exactly one, pass
-nothing and forget about it. **With more than one, ask the user which** and pass
+nothing and forget about it. **With more than one, ask the user which** and give
 `workspaceId` on every later call. Do not guess and do not pick the first: a
 workspace is a client, and the accounts differ per workspace. The server enforces
 this — a workspace-scoped call with several available fails with an error naming
@@ -117,8 +117,8 @@ as real formatting; every other network publishes the caption verbatim, so
 
 - Never invent media. No tool here draws a picture with AI: media is what the
   user provides, or what the tools make from what is already theirs — their
-  store screenshots, a screenshot of their site, a template video from those
-  (see the prepare-post-media skill, "Making pictures and video"). If a post
+  store screenshots, a screenshot of their site, a video from those and their
+  own clips (see the prepare-post-media skill, "Making pictures and video"). If a post
   needs a picture and none of that fits, ask for one.
 - Never publish, delete, or change an existing post's schedule on your own
   initiative — only on a clear instruction.

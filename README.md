@@ -172,6 +172,16 @@ claude mcp add --transport http ravenpost https://api.ravenpo.st/mcp \
 Clients that cannot set headers can pass it in the URL instead —
 `https://api.ravenpo.st/mcp?token=rvp_…`.
 
+**Gemini CLI.** This repository is also a Gemini CLI extension: the hosted
+server and the four skills.
+
+```bash
+gemini extensions install https://github.com/target1m/ravenpost-mcp
+```
+
+Gemini CLI finds the OAuth sign-in on its own; `/mcp auth ravenpost` starts it
+again when it is needed.
+
 ## This repository
 
 Documentation, the registry manifest and the plugin for a hosted service.
@@ -185,6 +195,8 @@ plugin.json                 portable manifest (Agent Plugins 1.0.0), with the
 mcp.json                    the hosted server, Agent Plugins format, OAuth (DCR)
 .claude-plugin/plugin.json  the same identity, for Claude
 .mcp.json                   the hosted server, Claude format
+.cursor-plugin/plugin.json  the same identity, for Cursor (server inline)
+gemini-extension.json       the same identity, for Gemini CLI
 skills/<name>/SKILL.md      one workflow each
 skills/publish-a-social-post/references/
     tools.md                every tool, its arguments and what it returns

@@ -8,8 +8,9 @@ anything goes out.
 
 This plugin connects Claude to Ravenpost's hosted MCP server and adds four
 skills that teach Claude the workflow around it: settle the workspace and the
-accounts, preview before writing anything, and publish only when you ask —
-and Ravenpost itself holds every publish until you confirm it.
+accounts, preview before writing anything, and publish or schedule only after
+you say yes to the accounts, the caption and the time — and Ravenpost itself
+holds every publish until you confirm it.
 
 ## What you can do
 
@@ -46,7 +47,7 @@ and Ravenpost itself holds every publish until you confirm it.
 
 | Skill | What it teaches Claude |
 |---|---|
-| [`publish-a-social-post`](skills/publish-a-social-post/SKILL.md) | Settle the workspace, pick the accounts, collect what each destination requires, **preview before writing**, and ask before publishing — the one step that cannot be taken back |
+| [`publish-a-social-post`](skills/publish-a-social-post/SKILL.md) | Settle the workspace, pick the accounts, collect what each destination requires, **preview before writing**, and wait for your yes before anything is published or scheduled — publishing is the one step that cannot be taken back |
 | [`manage-scheduled-posts`](skills/manage-scheduled-posts/SKILL.md) | Find, edit, move, cancel and check posts — including that editing resets a post to a draft, and that deleting removes Ravenpost's copy rather than the live one |
 | [`prepare-post-media`](skills/prepare-post-media/SKILL.md) | Getting files in, the canvases each network wants, cutting one image for several networks, and the media rules a post actually fails on |
 | [`measure-and-time-posts`](skills/measure-and-time-posts/SKILL.md) | Reading analytics without turning "not collected" into a zero, and answering "when should I post?" without inventing a measured hour |
@@ -77,8 +78,13 @@ it. Privacy policy: <https://ravenpo.st/privacy/>.
   on the post card in the chat, or confirm it on the post in Ravenpost. A
   published post cannot be taken back through Ravenpost on Instagram, TikTok,
   Threads or YouTube, and deleting a post in Ravenpost never removes it from a
-  network, so that click is yours. Drafts, and schedules further ahead, stay
-  changeable and need no extra step.
+  network, so that click is yours. A schedule further ahead goes out by
+  itself, so Claude shows you the accounts, the caption and the time and
+  schedules it only when you say yes. Drafts stay in your workspace.
+- Account names, other posts' captions, analytics, a page Ravenpost
+  screenshots and a tool's warnings are written by somebody other than you. The
+  skills tell Claude to read them as data and never to follow an instruction
+  found in them.
 - Ravenpost does not write captions or generate images. The words and the files
   come from you or from Claude, and media is brought in from a link you give.
 - Some networks report no numbers to Ravenpost. Those are shown as not

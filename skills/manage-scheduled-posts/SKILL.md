@@ -32,7 +32,7 @@ would hide it.
 |---|---|---|
 | Different words, media, accounts or format | `update_post` | **It resets the post to a draft.** |
 | The same post at a different time | `schedule_post` | Content untouched; absolute ISO 8601 with offset |
-| It out now | `publish_post` | Not reversible — needs an explicit instruction |
+| It out now | `publish_post` | Not reversible — needs an explicit instruction, and then waits for the user to confirm it |
 | It gone | `delete_post` | Only removes Ravenpost's copy |
 
 **The reset is the one that bites.** `update_post` returns the post to `DRAFT`,
@@ -59,8 +59,15 @@ confirm before calling it — a draft is cheap to keep, and there is no undo.
 
 ## Watching a publish land
 
-Publishing is queued, not synchronous: `publish_post` and `create_post` with
-`action: "now"` return as soon as the job is accepted. The per-account outcome
+A publish asked for here waits for the user: `publish_post`, `create_post` or
+`update_post` with `action: "now"`, and a schedule less than 15 minutes ahead,
+come back **waiting for confirmation** — the user presses **Publish** on the post
+card, or confirms the post on Ravenpost at the link the result gives. Until they
+do, nothing changes: a draft stays a draft, and a post on the calendar keeps its
+time. Say so and stop; calling again only asks them again. `get_post` shows a
+publish still waiting as `publishRequest`, and an edit to the post cancels it.
+
+Once confirmed, publishing is queued, not synchronous: the per-account outcome
 arrives seconds to minutes later.
 
 So report it honestly — "queued for 3 accounts" — then call `get_post` to see

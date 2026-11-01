@@ -79,20 +79,31 @@ caption, and the time. `create_post` needs `caption`, `accountIds` and `action`:
 | `draft` | Saved, nothing scheduled | The user is still working on it |
 | `schedule` | Goes out at `scheduledAt` | A time was given — absolute ISO 8601 **with offset** (`2026-07-05T09:00:00+03:00`) |
 | `queue` | Goes out at the workspace's next free queue slot | "queue it", "next slot", "whenever you normally post" — see `list_queue_slots` |
-| `now` | Publishes immediately | **Only** when the user explicitly asked to publish now |
+| `now` | Saved, and **waits for the user to confirm it** — then publishes | **Only** when the user explicitly asked to publish now |
 
 **Publishing is the one step that cannot be undone.** People see a post within
 seconds, and a post on Instagram, Threads, TikTok or YouTube cannot be taken
 down through Ravenpost at all — deleting in Ravenpost removes our copy and leaves
-theirs live. So
-`action: "now"` and `publish_post` need an explicit instruction from the user in
-this turn. Scheduling does not: it sits on the calendar where it can be read and
-cancelled.
+theirs live. So `action: "now"` and `publish_post` need an explicit instruction
+from the user in this turn — and even then the server publishes nothing on your
+word. It saves the post and returns it **waiting for the user's confirmation**:
+they press **Publish** on the post card (in apps that show it) or confirm the
+post on Ravenpost at the link the result gives. A schedule less than 15 minutes
+ahead is a publish under another name and waits the same way. Scheduling further
+ahead does not: it sits on the calendar where it can be read and cancelled.
 
 **6. Report what happened.** `create_post` returns the post id and its status.
-Publishing is handed to a queue, so the per-account outcome arrives after the
-call — `get_post` shows each target's status, permalink and error. Say "queued
-for 3 accounts, I can check in a moment", not "published to 3 accounts".
+
+- **Waiting for confirmation** (`awaitingConfirmation` in the result, and a
+  first line that says *NOT PUBLISHED YET*): tell the user it is ready and
+  waiting for them — press Publish on the card above, or confirm it at the link
+  — with the accounts and the caption, and stop. **Do not call again** to get
+  it out: every call waits for them again, and `create_post` makes a second post
+  each time. When they say they have confirmed, `get_post` shows it publishing.
+- **Scheduled or queued**: name the time. Publishing is handed to a queue, so
+  the per-account outcome arrives after the call — `get_post` shows each
+  target's status, permalink and error. Say "queued for 3 accounts, I can check
+  in a moment", not "published to 3 accounts".
 
 ## Decisions this skill makes for you
 
@@ -142,3 +153,13 @@ as real formatting; every other network publishes the caption verbatim, so
 5. `create_post` with `action: "schedule"` and
    `scheduledAt: "2026-09-15T09:00:00+03:00"`.
 6. Report the post id and that both destinations are scheduled.
+
+> "Post this on LinkedIn now: *We're hiring a second engineer.*"
+
+1. `list_workspaces`, `list_accounts` → `acc_li` (@ravenpost).
+2. `preview_post` → clean, LinkedIn takes text-only posts.
+3. `create_post` with `action: "now"` → the result says *NOT PUBLISHED YET* and
+   carries `awaitingConfirmation` with the post's Ravenpost link.
+4. Tell the user: "It's ready for LinkedIn @ravenpost — press **Publish** on the
+   card, or confirm it here: <link>. Nothing goes out until you do." Then stop.
+5. When they say it's done, `get_post` to report each destination's status.

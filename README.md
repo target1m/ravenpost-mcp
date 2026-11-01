@@ -8,7 +8,8 @@ anything goes out.
 
 This plugin connects Claude to Ravenpost's hosted MCP server and adds four
 skills that teach Claude the workflow around it: settle the workspace and the
-accounts, preview before writing anything, and publish only when you ask.
+accounts, preview before writing anything, and publish only when you ask —
+and Ravenpost itself holds every publish until you confirm it.
 
 ## What you can do
 
@@ -71,10 +72,13 @@ it. Privacy policy: <https://ravenpo.st/privacy/>.
 
 ## Good to know
 
-- A published post cannot be taken back through Ravenpost on Instagram, TikTok,
+- **Nothing is published on Claude's word.** A post you ask to publish now —
+  or to schedule less than 15 minutes ahead — waits for you: press **Publish**
+  on the post card in the chat, or confirm it on the post in Ravenpost. A
+  published post cannot be taken back through Ravenpost on Instagram, TikTok,
   Threads or YouTube, and deleting a post in Ravenpost never removes it from a
-  network. That is why Claude previews first and publishes only on your
-  instruction; scheduling and drafting stay changeable.
+  network, so that click is yours. Drafts, and schedules further ahead, stay
+  changeable and need no extra step.
 - Ravenpost does not write captions or generate images. The words and the files
   come from you or from Claude, and media is brought in from a link you give.
 - Some networks report no numbers to Ravenpost. Those are shown as not
@@ -85,8 +89,9 @@ it. Privacy policy: <https://ravenpo.st/privacy/>.
 
 ## Tools
 
-26 tools. Every one declares a title and read-only / destructive / open-world
-hints, so your client can tell you what a call will do before you allow it.
+26 tools, and one more that only the post card calls (below). Every one
+declares a title and read-only / destructive / open-world hints, so your client
+can tell you what a call will do before you allow it.
 
 ### Accounts
 
@@ -102,11 +107,16 @@ hints, so your client can tell you what a call will do before you allow it.
 | `list_posts` | Posts 50 at a time — newest first, or soonest first when filtered to scheduled — optionally filtered by status, with the total that matches. |
 | `get_post` | One post with every destination's status and permalink. |
 | `preview_post` | Render a post as each platform will show it **without creating anything** — an interactive card in clients that support MCP Apps, and per-platform character counts everywhere else. |
-| `create_post` | Draft, publish, schedule or queue a post across any set of accounts. |
+| `create_post` | Draft, publish, schedule or queue a post across any set of accounts. A publish — now, or less than 15 minutes ahead — waits for you to confirm it. |
 | `update_post` | Edit a draft or scheduled post — resets it to draft, so pass an action to re-send it. |
 | `delete_post` | Delete the Ravenpost copy and cancel a pending publish. Never takes a live post down from a network. |
-| `schedule_post` | Move a post to a new time. |
-| `publish_post` | Publish a post immediately. |
+| `schedule_post` | Move a post to a new time. A time less than 15 minutes ahead waits for your confirmation. |
+| `publish_post` | Ask to publish a post now. Nothing goes out until you confirm it — **Publish** on the post card, or on the post in Ravenpost. |
+
+The post card's **Publish** button calls `confirm_publish`, which releases a
+publish you just confirmed. It is registered for the card alone: clients that
+show MCP Apps keep it out of Claude's tool list, and it acts only on a one-time
+code the card is given with the post.
 
 ### Media
 

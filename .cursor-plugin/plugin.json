@@ -29,7 +29,9 @@
   "skills": "./skills/",
   "mcpServers": {
     "ravenpost": {
-      "url": "https://api.ravenpo.st/mcp"
+      "type": "http",
+      "url": "https://api.ravenpo.st/mcp",
+      "placement": "server"
     }
   }
 }

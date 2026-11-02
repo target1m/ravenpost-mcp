@@ -211,7 +211,8 @@ plugin.json                 portable manifest (Agent Plugins 1.0.0), with the
 mcp.json                    the hosted server, Agent Plugins format, OAuth (DCR)
 .claude-plugin/plugin.json  the same identity, for Claude
 .mcp.json                   the hosted server, Claude format
-.cursor-plugin/plugin.json  the same identity, for Cursor (server inline)
+.cursor-plugin/plugin.json  the same identity, for Cursor and Grok Bot (server
+                            inline, with "placement": "server")
 gemini-extension.json       the same identity, for Gemini CLI
 skills/<name>/SKILL.md      one workflow each
 skills/publish-a-social-post/references/

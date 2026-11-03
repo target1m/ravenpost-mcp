@@ -43,10 +43,11 @@ openclaw mcp login ravenpost
 openclaw mcp status --verbose
 ```
 
-`login` opens Ravenpost's sign-in. The user signs in (or creates an account in
-the same flow) and approves the connection. Ravenpost's approval page names the
-app and notes that it runs on this machine — that is OpenClaw, and it is
-expected. OpenClaw keeps its own credential; the user can end it at any time
+`login` prints a link to Ravenpost's sign-in and waits. The user opens it in a
+browser, signs in (or creates an account in the same flow) and approves the
+connection; the browser then returns to OpenClaw on its own, and `login` ends
+with "MCP OAuth credentials saved". Ravenpost's approval page names the app and
+notes that it runs on this machine — that is OpenClaw, and it is expected. OpenClaw keeps its own credential; the user can end it at any time
 under **Connected AI apps** on their Ravenpost account page.
 
 **On a machine with no browser**, `login` prints a link. The

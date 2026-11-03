@@ -221,6 +221,12 @@ openclaw mcp login ravenpost
 [`openclaw/ravenpost/SKILL.md`](openclaw/ravenpost/SKILL.md) is the skill for
 it: the four skills' workflow in the one-folder shape ClawHub publishes, with
 those two commands as its setup and the sign-in for a machine with no browser.
+It is on ClawHub as
+[`ravenpost`](https://clawhub.ai/muratkaragozgil/skills/ravenpost):
+
+```bash
+openclaw skills install @muratkaragozgil/ravenpost
+```
 
 ## This repository
 

@@ -4,7 +4,7 @@ description: Schedule and publish social media posts to Instagram, TikTok, X, Li
 homepage: https://ravenpo.st/mcp/
 metadata:
   openclaw:
-    emoji: "🐦‍⬛"
+    emoji: "🐦"
     homepage: https://ravenpo.st/mcp/
     requires:
       bins:
@@ -40,7 +40,7 @@ openclaw mcp add ravenpost \
   --auth oauth \
   --oauth-scope mcp
 openclaw mcp login ravenpost
-openclaw mcp doctor ravenpost --probe
+openclaw mcp status --verbose
 ```
 
 `login` opens Ravenpost's sign-in. The user signs in (or creates an account in
@@ -49,7 +49,7 @@ app and notes that it runs on this machine — that is OpenClaw, and it is
 expected. OpenClaw keeps its own credential; the user can end it at any time
 under **Connected AI apps** on their Ravenpost account page.
 
-**On a machine with no browser** (a server, a VPS): `login` prints a link. The
+**On a machine with no browser**, `login` prints a link. The
 user opens it on any device and signs in; when the browser then fails to reach
 the local address, they copy the `code` value from its address bar and run
 (the `iss` beside it is always `https://api.ravenpo.st`):

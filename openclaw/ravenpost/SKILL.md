@@ -52,12 +52,15 @@ under **Connected AI apps** on their Ravenpost account page.
 
 **On a machine with no browser**, `login` prints a link. The
 user opens it on any device and signs in; when the browser then fails to reach
-the local address, they copy the `code` value from its address bar and run
-(the `iss` beside it is always `https://api.ravenpo.st`):
+the local address, they copy the `code` value from its address bar and run:
 
 ```bash
-openclaw mcp login ravenpost --code THE_CODE --issuer https://api.ravenpo.st
+openclaw mcp login ravenpost --code THE_CODE
 ```
+
+OpenClaw 2026.10.10 takes the code alone and refuses an `--issuer` option. If
+`openclaw mcp login --help` lists `--issuer` in a later OpenClaw, add
+`--issuer https://api.ravenpo.st` — the `iss` value beside the code.
 
 If `openclaw mcp status` ever reports `authorization-required`, run
 `openclaw mcp login ravenpost` again; if sign-in is stuck, run

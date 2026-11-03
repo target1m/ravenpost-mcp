@@ -171,6 +171,10 @@ https://api.ravenpo.st/mcp
 Transport: **Streamable HTTP**. Official registry entry:
 [`st.ravenpo/ravenpost`](https://registry.modelcontextprotocol.io/v0/servers?search=ravenpost).
 
+**Claude's Connectors Directory.** Ravenpost is listed there —
+<https://claude.ai/directory/ravenpost> — so in Claude on the web, the desktop
+and mobile it is Connect and a sign-in, with nothing to paste.
+
 **OAuth (recommended).** Add the URL above as a custom connector in any client
 that speaks MCP authorization — Claude, ChatGPT, Cursor, VS Code — and sign in
 when it opens Ravenpost. The server is an OAuth resource server:
@@ -198,6 +202,26 @@ gemini extensions install https://github.com/target1m/ravenpost-mcp
 Gemini CLI finds the OAuth sign-in on its own; `/mcp auth ravenpost` starts it
 again when it is needed.
 
+**Just the skills.** The four skills install into Claude Code, Codex, Cursor
+and the other agents the [skills CLI](https://skills.sh/) supports. They teach
+the workflow and the server does the work, so connect the server as above too.
+
+```bash
+npx skills add target1m/ravenpost-mcp
+```
+
+**OpenClaw.** OpenClaw saves the server and runs the sign-in itself:
+
+```bash
+openclaw mcp add ravenpost --url https://api.ravenpo.st/mcp \
+  --transport streamable-http --auth oauth --oauth-scope mcp
+openclaw mcp login ravenpost
+```
+
+[`openclaw/ravenpost/SKILL.md`](openclaw/ravenpost/SKILL.md) is the skill for
+it: the four skills' workflow in the one-folder shape ClawHub publishes, with
+those two commands as its setup and the sign-in for a machine with no browser.
+
 ## This repository
 
 Documentation, the registry manifest and the plugin for a hosted service.
@@ -218,6 +242,8 @@ skills/<name>/SKILL.md      one workflow each
 skills/publish-a-social-post/references/
     tools.md                every tool, its arguments and what it returns
     platforms.md            caption budgets, media rules, per-platform limits
+openclaw/ravenpost/SKILL.md the skill for OpenClaw, in the one-folder shape
+                            ClawHub publishes (no plugin manifest reads it)
 server.json                 the official MCP registry entry
 scripts/package.sh          builds the ZIP the ChatGPT plugin portal takes
 ```

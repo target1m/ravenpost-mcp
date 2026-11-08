@@ -251,7 +251,6 @@ skills/publish-a-social-post/references/
 openclaw/ravenpost/SKILL.md the skill for OpenClaw, in the one-folder shape
                             ClawHub publishes (no plugin manifest reads it)
 server.json                 the official MCP registry entry
-scripts/package.sh          builds the ZIP the ChatGPT plugin portal takes
 ```
 
 Both reference files are **generated from the server's own tool registrations
@@ -260,14 +259,15 @@ the server no longer takes is worse than one that says nothing, because the
 model follows it and the call fails.
 
 **Submitting to ChatGPT.** OpenAI's plugin portal takes the package as a ZIP
-(Plugins → Upload plugin). `scripts/package.sh` builds it from `plugin.json`,
-`mcp.json`, `skills/`, the licence and the icon the site serves — nothing
-Claude-only and no credentials (reviewer sign-in goes in the portal's Review
-details form). The repository keeps no image of its own: the Claude directory
-holds a plugin for review while one sits beside a script that could reach it. The
-listing text, the five positive and three negative review cases and the
-release notes ride in `plugin.json`, so changing them means a new version and
-a new ZIP; changes to the hosted tools don't — the portal rescans the server.
+(Plugins → Upload plugin), built from `plugin.json`, `mcp.json`, `skills/`,
+the licence and the icon the site serves, with nothing Claude-only and no
+credentials (reviewer sign-in goes in the portal's Review details form). The
+script that builds it lives outside this repository: the Claude directory
+takes only Markdown, text, JSON, YAML and a few image types from an
+organization it has not verified, and no script at all. The listing text, the
+five positive and three negative review cases and the release notes ride in
+`plugin.json`, so changing them means a new version and a new ZIP; changes to
+the hosted tools don't, because the portal rescans the server.
 
 ## Links
 

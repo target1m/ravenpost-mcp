@@ -137,7 +137,7 @@ once — pass each destination the id that fits it.
 
 Video is never re-encoded: `format`, `fit` and `crop` are ignored, and the file
 is recorded exactly as uploaded (mp4, mov or webm). Cut it before uploading.
-Four consequences worth saying out loud before the post fails:
+Five consequences worth saying out loud before the post fails:
 
 - **Instagram video must be posted as `REEL` or `STORY`.** An `IMAGE` or
   `CAROUSEL` post carrying a video is rejected at publish time.
@@ -147,6 +147,9 @@ Four consequences worth saying out loud before the post fails:
   refuses fails the post with the reason rather than publishing it without the
   video.
 - **YouTube takes nothing but video** (one per post, no images).
+- **DEV and Hashnode take one image, as the article's cover** (1000×420 reads
+  best on DEV, 1600×840 on Hashnode). Nothing else attached is sent; a picture
+  inside the article is a Markdown image in the caption.
 - **TikTok refuses PNG images** — JPEG or WebP — and it refuses them
   *asynchronously*, minutes after the upload appeared to work. Convert before
   uploading rather than debugging it afterwards.
@@ -154,5 +157,5 @@ Four consequences worth saying out loud before the post fails:
 ## Alt text
 
 Alt text belongs to the asset, not the post: written once, it rides along to X,
-Bluesky and Threads on every post that uses the file (Instagram's publishing API
-has no field for it). Set it in the Ravenpost media library.
+Bluesky, Mastodon and Threads on every post that uses the file (Instagram's
+publishing API has no field for it). Set it in the Ravenpost media library.

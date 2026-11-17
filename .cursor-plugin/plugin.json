@@ -1,8 +1,8 @@
 {
   "name": "ravenpost",
   "displayName": "Ravenpost",
-  "version": "1.3.1",
-  "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram. Compose once, preview every destination before it goes out, then publish now, schedule it, or drop it into a weekly queue — and read back followers and engagement for the accounts each platform lets it measure.",
+  "version": "1.4.0",
+  "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, Mastodon, YouTube, Pinterest, Telegram and Discord, and articles to DEV and Hashnode. Compose once, preview every destination before it goes out, then publish now, schedule it, or drop it into a weekly queue — and read back followers and engagement for the accounts each platform lets it measure.",
   "author": {
     "name": "Ravenpost",
     "email": "support@ravenpo.st"
@@ -24,6 +24,10 @@
     "youtube",
     "pinterest",
     "telegram",
+    "discord",
+    "mastodon",
+    "devto",
+    "hashnode",
     "analytics"
   ],
   "skills": "./skills/",

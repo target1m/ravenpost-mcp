@@ -1,6 +1,6 @@
 ---
 name: ravenpost
-description: Schedule and publish social media posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and Telegram through Ravenpost's hosted MCP server — preview every destination before anything goes out, schedule it or drop it into a weekly queue, and read follower counts and engagement back. Use when the user wants to post, cross-post, schedule, queue or draft social content to their connected accounts, asks what is scheduled, or asks how their posts did.
+description: Schedule and publish social media posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, Mastodon, YouTube, Pinterest, Telegram and Discord, and articles to DEV and Hashnode, through Ravenpost's hosted MCP server — preview every destination before anything goes out, schedule it or drop it into a weekly queue, and read follower counts and engagement back. Use when the user wants to post, cross-post, schedule, queue or draft social content to their connected accounts, asks what is scheduled, or asks how their posts did.
 homepage: https://ravenpo.st/mcp/
 metadata:
   openclaw:
@@ -15,9 +15,10 @@ metadata:
 
 [Ravenpost](https://ravenpo.st/) is a social media scheduler: **one post carries
 one caption and one set of media, and goes to any number of connected accounts**
-across Instagram, TikTok, X, LinkedIn, Threads, Bluesky, YouTube, Pinterest and
-Telegram. Each account is a separate destination with its own publish status,
-link and error.
+across Instagram, TikTok, X, LinkedIn, Threads, Bluesky, Mastodon, YouTube,
+Pinterest, Telegram and Discord, and DEV and Hashnode, where a post goes out as
+an article. Each account is a separate destination with its own publish
+status, link and error.
 
 OpenClaw reaches it through Ravenpost's hosted MCP server,
 `https://api.ravenpo.st/mcp`. There is nothing to install and no API key: the
@@ -90,6 +91,11 @@ OpenClaw may show the tools with the server's name in front, such as
    - Pinterest needs a board: `list_boards`, then set `board`.
    - TikTok without the `tiktok` options publishes **privately** (`SELF_ONLY`).
      Say so, rather than letting the user think it went public.
+   - DEV and Hashnode take an article: `title` (else the caption's first line,
+     which then leaves the body), the caption as Markdown, `articleTags` (up to
+     five; DEV keeps four), `canonicalUrl` for a piece first published
+     elsewhere, and the first image as the cover. Hashnode publishes only to a
+     blog on its Pro plan.
    - X takes one X account per post. Its budget is 280 characters as X counts
      them — every link is 23, an emoji is 2 — or 25,000 on X Premium
      (`captionMax` in `list_accounts`).

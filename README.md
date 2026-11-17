@@ -3,8 +3,8 @@
 Schedule and publish social media posts from Claude. [Ravenpost](https://ravenpo.st/)
 is a social media scheduler for content creators, influencers and agencies:
 write a post once, send it to Instagram, TikTok, X, LinkedIn, Threads, Bluesky,
-YouTube, Pinterest and Telegram, and see how each network will show it before
-anything goes out.
+Mastodon, YouTube, Pinterest, Telegram and Discord, or as an article to DEV and
+Hashnode, and see how each network will show it before anything goes out.
 
 This plugin connects Claude to Ravenpost's hosted MCP server and adds four
 skills that teach Claude the workflow around it: settle the workspace and the
@@ -22,6 +22,8 @@ holds every publish until you confirm it.
   a time you name, or in the next free slot of your weekly posting queue.
 - **Edit, reschedule or cancel** posts that have not gone out yet, and check how
   a published post landed on each account.
+- **Publish articles to DEV and Hashnode** with a title, tags and the address
+  of the original, the caption as the Markdown body.
 - **Bring in images and video** from a link, and reshape one image into each
   network's format.
 - **Read followers and engagement** for the accounts each network lets Ravenpost
@@ -77,8 +79,8 @@ it. Privacy policy: <https://ravenpo.st/privacy/>.
   or to schedule less than 15 minutes ahead — waits for you: press **Publish**
   on the post card in the chat, or confirm it on the post in Ravenpost. A
   published post cannot be taken back through Ravenpost on Instagram, TikTok,
-  Threads or YouTube, and deleting a post in Ravenpost never removes it from a
-  network, so that click is yours. A schedule further ahead goes out by
+  Threads or YouTube, and deleting a post through Claude never removes it from
+  a network, so that click is yours. A schedule further ahead goes out by
   itself, so Claude shows you the accounts, the caption and the time and
   schedules it only when you say yes. Drafts stay in your workspace.
 - Account names, other posts' captions, analytics, a page Ravenpost

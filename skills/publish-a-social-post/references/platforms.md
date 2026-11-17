@@ -15,8 +15,12 @@ accepted, because an operator can withdraw a platform between releases.
 | LinkedIn (`LINKEDIN`) | 3000 | — | yes | 20 | 1 | — |
 | Threads (`THREADS`) | 500 | 25 | yes | 20 | 20 | — |
 | Bluesky (`BLUESKY`) | 300 | 25 | yes | 4 | 1 | — |
+| Discord (`DISCORD`) | 2000 | 25 | yes | 10 | 10 | — |
+| Mastodon (`MASTODON`) | 500 | 25 | yes | 4 | 1 | — |
 | YouTube (`YOUTUBE`) | 5000 | — | no | 0 | 1 | — |
 | Pinterest (`PINTEREST`) | 800 | — | no | 5 | 1 | — |
+| DEV (`DEVTO`) | 100000 | — | yes | 1 | 0 | — |
+| Hashnode (`HASHNODE`) | 100000 | — | yes | 1 | 0 | — |
 
 **A post going to several platforms is limited by the tightest one.** With X in
 the selection the budget is 280 characters, whatever else is selected —
@@ -36,8 +40,12 @@ over-long caption rather than truncating it.
 | LinkedIn (`LINKEDIN`) | yes | no | manual, every ~60 days (warned 14 days ahead) |
 | Threads (`THREADS`) | no | no | automatic |
 | Bluesky (`BLUESKY`) | yes | yes | automatic |
+| Discord (`DISCORD`) | yes | no | automatic |
+| Mastodon (`MASTODON`) | yes | yes | automatic |
 | YouTube (`YOUTUBE`) | no | no | automatic |
 | Pinterest (`PINTEREST`) | yes | yes | automatic |
+| DEV (`DEVTO`) | yes | yes | automatic |
+| Hashnode (`HASHNODE`) | yes | yes | automatic |
 
 Deleting a post in Ravenpost always removes the Ravenpost copy and cancels a
 pending publish. It **never** takes down a post already live on Instagram,

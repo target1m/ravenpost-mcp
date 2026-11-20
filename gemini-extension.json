@@ -1,6 +1,6 @@
 {
   "name": "ravenpost",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, Mastodon, YouTube, Pinterest, Telegram and Discord, and articles to DEV and Hashnode. Preview every destination before it goes out, then publish, schedule or queue it, and read followers and engagement.",
   "mcpServers": {
     "ravenpost": {

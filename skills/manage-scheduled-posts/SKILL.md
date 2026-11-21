@@ -93,8 +93,14 @@ Common ones are worth recognising:
   platform locked or suspended. Ravenpost marks it as needing reconnection, and
   every post to it fails at once until somebody reconnects it on the Accounts
   page; retrying from here only fails again.
-- **a missing Pinterest board** — the post was created without one. Add it with
+- **a missing Pinterest board** — scheduling and publishing refuse a pin
+  without one now, so only an older post fails on it. Add it with
   `update_post` (`board`), then publish it again when the user asks; it waits
   for their confirmation like any publish.
-- **TikTok rejecting an image** — PNG is refused; JPEG or WebP only, and the
-  refusal arrives minutes after the upload succeeded.
+- **media the network cannot publish** — a post of photos to YouTube, a PNG to
+  TikTok, more than ten files on Instagram. A post is refused for these before
+  it is scheduled now, so this too is an older post, and scheduling or
+  publishing it again is refused with the same reason. Change the media with
+  `update_post`, or leave that account out; once the post has gone out to its
+  other accounts it can no longer be edited, so create a new post for that
+  account instead.

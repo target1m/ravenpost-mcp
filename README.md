@@ -51,7 +51,7 @@ holds every publish until you confirm it.
 |---|---|
 | [`publish-a-social-post`](skills/publish-a-social-post/SKILL.md) | Settle the workspace, pick the accounts, collect what each destination requires, **preview before writing**, and wait for your yes before anything is published or scheduled — publishing is the one step that cannot be taken back |
 | [`manage-scheduled-posts`](skills/manage-scheduled-posts/SKILL.md) | Find, edit, move, cancel and check posts — including that editing resets a post to a draft, and that deleting removes Ravenpost's copy rather than the live one |
-| [`prepare-post-media`](skills/prepare-post-media/SKILL.md) | Getting files in, the canvases each network wants, cutting one image for several networks, and the media rules a post actually fails on |
+| [`prepare-post-media`](skills/prepare-post-media/SKILL.md) | Getting files in, the canvases each network wants, cutting one image for several networks, and the media rules a post is refused for |
 | [`measure-and-time-posts`](skills/measure-and-time-posts/SKILL.md) | Reading analytics without turning "not collected" into a zero, and answering "when should I post?" without inventing a measured hour |
 
 ## Data and privacy
@@ -106,7 +106,7 @@ can tell you what a call will do before you allow it.
 | Tool | What it does |
 |---|---|
 | `list_workspaces` | Every workspace the credential can act in. With more than one, the other tools require a `workspaceId` rather than guessing which client you meant. |
-| `list_accounts` | Connected accounts with their ids, platforms and status. |
+| `list_accounts` | Connected accounts with their ids, platforms and status, and what each can publish (`accepts`). |
 
 ### Posts
 

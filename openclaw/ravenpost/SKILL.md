@@ -84,11 +84,18 @@ OpenClaw may show the tools with the server's name in front, such as
 ## Posting
 
 3. **Collect what the destinations require.**
-   - Instagram, TikTok, YouTube and Pinterest refuse a post without media. Put a
-     file in with `upload_media` (a public URL), or `create_media_upload` then
-     `attach_media` for a large file. `create_variants` cuts one image into each
-     network's canvas — feed, story, square, landscape.
-   - Pinterest needs a board: `list_boards`, then set `board`.
+   - Instagram, TikTok, YouTube and Pinterest refuse a post without media, and
+     YouTube one of photos alone. Each account's `accepts` in `list_accounts`
+     says what it can publish; a post one of its accounts cannot publish is
+     refused before anything is written. Put a file in with `upload_media` (a
+     public URL), or `create_media_upload` then `attach_media` for a large file.
+     `create_variants` cuts one image into each network's canvas — feed, story,
+     square, landscape.
+   - Pinterest needs a board: `list_boards`, then set `board`. Without it the
+     post can only be a draft.
+   - A Discord server (`connection` `DISCORD_BOT`) posts to the channel picked
+     on each post, which no tool here can pick: save its post as a draft and
+     tell the user to pick the channel in Ravenpost.
    - TikTok without the `tiktok` options publishes **privately** (`SELF_ONLY`).
      Say so, rather than letting the user think it went public.
    - DEV and Hashnode take an article: `title` (else the caption's first line,

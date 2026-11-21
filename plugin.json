@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ravenpost",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Schedule and publish social posts to Instagram, TikTok, X, LinkedIn, Threads, Bluesky, Mastodon, YouTube, Pinterest, Telegram and Discord, and articles to DEV and Hashnode. Compose once, preview every destination before it goes out, then publish now, schedule it, or drop it into a weekly queue — and read back followers and engagement for the accounts each platform lets it measure.",
   "author": {
     "name": "T1M LLC",
@@ -117,7 +117,7 @@
         "commerce_description": "Ravenpost sells nothing inside ChatGPT and the plugin processes no payments."
       },
       "publication": {
-        "release_notes": "The listing's description now opens with what Ravenpost does: write a social media post once, schedule or publish it to one account or several, see it as each network will show it, and nothing goes out until you confirm it. Carried over from 1.4.0: thirteen networks. Discord and Mastodon are back, and a post can go to DEV and Hashnode as an article, with its title, tags and original address (title, articleTags and canonicalUrl on the publishing tools). The publishing skill says how an article differs from a feed post. Publishing still waits for you: a post you ask to publish now, or to schedule less than 15 minutes ahead, goes out only once you press Publish on its card or confirm it in Ravenpost."
+        "release_notes": "Ravenpost now says what each connected account can publish before anything is composed: list_accounts gives every account's accepts (YouTube a video and never photos alone, TikTok JPEG or WebP photos, Mastodon images or a video but not both, the sizes and lengths each network takes), and platform_limits gives the same rules as data. A post one of its accounts cannot publish, an Instagram format its media do not fit, a Pinterest pin with no board or a Discord server post with no channel is refused when it is written, scheduled or published, with the reason, instead of failing at its time after the other accounts have published. Left out, an Instagram post's type follows its media. The skills say all of it. Carried over from 1.4.1: the listing's description opens with what Ravenpost does. From 1.4.0: thirteen networks, with Discord and Mastodon back and articles on DEV and Hashnode. Publishing still waits for you: a post you ask to publish now, or to schedule less than 15 minutes ahead, goes out only once you press Publish on its card or confirm it in Ravenpost."
       }
     }
   }

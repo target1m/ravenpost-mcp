@@ -137,22 +137,27 @@ once — pass each destination the id that fits it.
 
 Video is never re-encoded: `format`, `fit` and `crop` are ignored, and the file
 is recorded exactly as uploaded (mp4, mov or webm). Cut it before uploading.
-Five consequences worth saying out loud before the post fails:
+What each account takes is its `accepts` in `list_accounts`, and a post one of
+its accounts cannot publish is refused before anything is written. The ones
+worth saying out loud before you choose the media:
 
-- **Instagram video must be posted as `REEL` or `STORY`.** An `IMAGE` or
-  `CAROUSEL` post carrying a video is rejected at publish time.
+- **Instagram publishes a video as a `REEL` or a `STORY`.** Leave `type` out
+  and the post's format follows its media; an `IMAGE` post carrying a video is
+  refused.
 - **Bluesky takes up to four images or one video, never both** — a video goes
   alone. Bluesky rations video per account per day, and an account it hosts
   needs a verified email address before it can upload any; a video Bluesky
   refuses fails the post with the reason rather than publishing it without the
   video.
-- **YouTube takes nothing but video** (one per post, no images).
+- **YouTube takes nothing but video** (one per post): a post of photos is
+  refused, whatever other accounts it goes to.
+- **Mastodon takes up to four images or one video, never both** — a post
+  carrying both is refused.
 - **DEV and Hashnode take one image, as the article's cover** (1000×420 reads
   best on DEV, 1600×840 on Hashnode). Nothing else attached is sent; a picture
   inside the article is a Markdown image in the caption.
-- **TikTok refuses PNG images** — JPEG or WebP — and it refuses them
-  *asynchronously*, minutes after the upload appeared to work. Convert before
-  uploading rather than debugging it afterwards.
+- **TikTok refuses PNG photos** — JPEG or WebP only — and a post carrying one
+  is refused before it is written. Convert the image before uploading.
 
 ## Alt text
 

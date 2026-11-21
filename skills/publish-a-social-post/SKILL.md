@@ -33,8 +33,8 @@ them confirm.
 **3. Collect what the destinations require.** Only some of this applies:
 
 - **Pinterest** — call `list_boards` for that account and set `board`. A pin
-  belongs to a board, Pinterest has no default, and without one the post is
-  created and then fails at publish time.
+  belongs to a board and Pinterest has no default, so without one the post can
+  only be saved as a draft: scheduling or publishing it is refused.
 - **Instagram reel audio** — `list_audio` (omit the query for what is trending),
   then pass the track as `audio`. Only reels, and only Instagram accounts
   connected through Facebook; the tool says so if the account cannot.
@@ -59,8 +59,21 @@ them confirm.
 - **TikTok** — the `tiktok` argument carries the creator's posting options.
   Omit it and the post publishes **privately** (`SELF_ONLY`), which is the safe
   default, not a bug. Say so rather than letting the user assume it went public.
-- **Media** — Instagram, TikTok, YouTube and Pinterest refuse a post with none.
-  Use the `prepare-post-media` skill; pass the returned ids as `mediaIds`.
+- **Media** — each account's `accepts` in `list_accounts` says what it can
+  publish, and a post one of its accounts cannot publish is refused before
+  anything is written, with the reason. Instagram, TikTok, YouTube and
+  Pinterest refuse a post with no media; YouTube takes a video and never
+  photos alone; TikTok takes JPEG or WebP photos, never PNG; Mastodon takes
+  images or a video, not both. Read `accepts` before choosing media, use the
+  `prepare-post-media` skill, and give the returned ids as `mediaIds`.
+- **Instagram format** — leave `type` out and it follows the media: several
+  files a `CAROUSEL`, one video a `REEL`, one photo an `IMAGE`. Set it for a
+  `STORY`, or when the user asks for a format; one the media cannot be
+  published as is refused.
+- **Discord servers** — an account whose `connection` is `DISCORD_BOT` posts
+  to the channel picked on each post, and no tool here can pick one. Save its
+  post as a draft and tell the user to pick the channel on the post in
+  Ravenpost; scheduling or publishing it before then is refused.
 - **DEV and Hashnode** — a post goes out there as an article. `title` is its
   title, or else the caption's first line becomes the title and leaves the
   body; the caption is the article, in Markdown; `articleTags` holds up to five
